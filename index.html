@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📦 Gói Hàng Cute 3.0</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pk:#ffb3d1;--pkd:#ff7fb0;--mnd:#5fcf9e;--lvd:#9b7bff;--sun:#ffd97d;--sund:#ffb347;--br:#6b4f4f;--brs:#9b8181;--shs:0 4px 0 rgba(160,130,150,.12),0 6px 14px rgba(180,150,180,.14)}
+body{font-family:'Quicksand',system-ui,sans-serif;color:var(--br);background:radial-gradient(circle at 8% 10%,#ffe4f3 0,transparent 45%),radial-gradient(circle at 92% 8%,#e2f4ff 0,transparent 45%),linear-gradient(160deg,#fff6fb,#f3f9ff 50%,#f4fff8);min-height:100vh;padding:12px}
+h1,h2,h3,h4{font-family:sans-serif;font-weight:700}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.game{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.topbar{background:#ffffffdd;border-radius:26px;padding:10px 16px;box-shadow:var(--shs);display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:2px solid #fff}
+.hamburger{width:44px;height:44px;border-radius:14px;background:#fff;border:2px solid #ffe6f2;font-size:20px;box-shadow:var(--shs)}
+.brand{display:flex;align-items:center;gap:8px}
+.brand .logo{font-size:28px}
+.brand h1{font-size:18px;color:var(--pkd)}
+.brand .sub{font-size:10.5px;color:var(--brs);font-weight:600;letter-spacing:1.4px;text-transform:uppercase}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+.stat{display:flex;align-items:center;gap:6px;background:#fff3f8;border:2px solid #ffe6f2;border-radius:16px;padding:5px 12px;font-weight:700;font-size:14px}
+.stat b{font-size:16px;color:var(--pkd)}
+.xpwrap{display:flex;flex-direction:column;gap:3px;min-width:130px}
+.xpbar{height:12px;background:#ffe9f4;border-radius:20px;overflow:hidden}
+.xpbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sun),var(--pkd))}
+.xpwrap small{font-size:10.5px;font-weight:700;color:var(--brs);text-align:center}
+.icon-btn{width:42px;height:42px;border-radius:14px;background:#fff;border:2px solid #ffe6f2;font-size:18px;box-shadow:var(--shs)}
+.icon-btn.on{background:#ffd9ec}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:320px;max-width:88vw;background:#fff;box-shadow:8px 0 34px rgba(150,110,140,.32);transform:translateX(-105%);transition:transform .3s;z-index:150;overflow-y:auto;padding:18px}
+.drawer.open{transform:translateX(0)}
+.drawer-overlay{position:fixed;inset:0;background:rgba(90,60,85,.42);opacity:0;pointer-events:none;transition:opacity .3s;z-index:140}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.drawer-head h3{font-size:20px;color:var(--pkd)}
+.drawer-close{width:34px;height:34px;border-radius:12px;background:#fff;border:2px solid #ffe6f2;font-size:16px;font-weight:800}
+.drawer-section{margin-bottom:12px;padding-bottom:11px;border-bottom:1px dashed #f0e6ff}
+.drawer-section:last-child{border-bottom:none}
+.drawer-section>label{font-size:11px;font-weight:800;color:var(--brs);text-transform:uppercase;letter-spacing:.9px;display:block;margin-bottom:8px}
+.track-list{display:flex;flex-direction:column;gap:5px}
+.track-btn{padding:8px 12px;border-radius:12px;background:#faf6ff;border:2px solid #f0e6ff;text-align:left;font-weight:700;font-size:12.5px}
+.track-btn.active{background:#ffd9ec;border-color:var(--pkd);color:var(--pkd)}
+.vol-row{display:flex;align-items:center;gap:10px;background:#faf6ff;border-radius:12px;padding:8px 12px;border:2px solid #f0e6ff}
+.vol-row input{flex:1}
+.vol-row b{font-size:13px;color:var(--pkd);min-width:34px;text-align:right}
+.theme-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:6px}
+.theme-btn{aspect-ratio:1;border-radius:12px;border:3px solid #fff;position:relative;overflow:hidden}
+.theme-btn.active{outline:3px solid var(--pkd);outline-offset:2px}
+.theme-btn .lbl{position:absolute;bottom:0;left:0;right:0;font-size:8px;font-weight:800;background:#ffffffdd;text-align:center;padding:1px;color:var(--br)}
+.country-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
+.country-btn{aspect-ratio:1;border-radius:12px;background:#fff;border:2px solid #f0e6ff;font-size:22px;display:grid;place-items:center}
+.country-btn.active{outline:3px solid var(--pkd);outline-offset:2px;background:#fff8fc}
+.stats-list{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:700}
+.stats-list span{display:flex;justify-content:space-between;background:#faf6ff;border-radius:10px;padding:5px 10px}
+.stats-list span b{color:var(--pkd)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:18px;background:#ffffffaa;border:2px solid #fff;font-weight:700;font-size:14px;color:var(--brs);box-shadow:var(--shs)}
+.tab.active{background:#ffeaf4;color:var(--pkd);border-color:#ffd3e6}
+.tab .badge{display:inline-block;min-width:20px;padding:0 6px;margin-left:4px;background:var(--pkd);color:#fff;border-radius:20px;font-size:11px;font-weight:800}
+.tab .badge[data-zero="1"]{display:none}
+.view{display:none}
+.view.active{display:block}
+.panel{background:#ffffffdd;border:2px solid #fff;border-radius:24px;padding:16px;box-shadow:var(--shs)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.panel-head h2{font-size:19px}
+.muted{color:var(--brs);font-weight:600;font-size:14px;text-align:center;padding:24px 10px}
+.btn{padding:10px 18px;border-radius:16px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn.primary{background:#ff7fb0;color:#fff}
+.btn.primary:disabled{opacity:.45}
+.btn.mint{background:#5fcf9e;color:#fff}
+.btn.ghost{background:#fff;border:2px solid #ffe0ee;color:var(--br)}
+.btn.lav{background:#9b7bff;color:#fff}
+.btn.tiny{padding:6px 12px;font-size:12px;border-radius:12px}
+.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.order-card{background:#fff;border:2px solid #ffe9f4;border-radius:20px;padding:13px;position:relative}
+.order-card.big-order{border-color:#ffc9a5;background:#fff8f0}
+.order-card.big-order::before{content:'📦 ĐƠN LỚN';position:absolute;top:9px;right:9px;background:var(--sund);color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;z-index:2}
+.oc-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.ava{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#ffd9ec}
+.oc-head b{font-size:15px;display:block}
+.oc-head small{font-size:11px;color:var(--brs);font-weight:600}
+.tag-person{display:inline-block;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:20px;background:#e9f7ff;color:#3a8fc7;margin-left:4px}
+.oc-items{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+.chip{background:#f6f2ff;border:1.5px solid #e7ddff;border-radius:11px;padding:3px 8px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
+.chip .e{font-size:15px}
+.oc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.reward{font-weight:800;color:var(--sund);font-size:16px}
+.dist{font-size:11px;color:var(--brs);font-weight:700}
+.perfume-ask{margin-top:8px;padding:7px 10px;border-radius:12px;background:#f0e9ff;border:1.5px dashed #c9b6ff;font-size:11.5px;font-weight:700;color:#6b3faf}
+.pack-layout{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:12px;align-items:start}
+.shelf-panel h3,.decor-panel h3{font-size:16px;margin-bottom:10px}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;max-height:520px;overflow-y:auto;padding-right:4px}
+.shelf-item{background:#fff;border:2px solid #f0e6ff;border-radius:16px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.shelf-item .emoji{font-size:26px}
+.shelf-item .nm{font-size:9.5px;font-weight:700;color:var(--brs);text-align:center}
+.shelf-item.done{opacity:.35;pointer-events:none;filter:grayscale(.7)}
+.box-panel{display:flex;flex-direction:column;gap:12px;min-height:600px}
+.pack-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#fffafd;border:2px dashed #ffd9ec;border-radius:16px;padding:9px 12px}
+.pack-head .who{font-weight:800;font-size:14px}
+.pack-progress{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;color:var(--brs)}
+.progress{width:110px;height:12px;background:#f1eaf7;border-radius:20px;overflow:hidden}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#5fcf9e,#3fae7e)}
+.task-note{background:#fff6b8;border:2px solid #f0dd7a;border-radius:14px;padding:9px 12px;font-size:12px;font-weight:700;color:#7a5e15}
+.task-note h4{font-size:13px;color:#8a6d1e;margin-bottom:4px}
+.task-note ul{list-style:none;font-size:11.5px;line-height:1.5}
+.task-note .pf-line{margin-top:5px;padding-top:5px;border-top:1px dashed #f0dd7a;color:#8a4f9b}
+.box-size-row{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;background:#fffafd;border:2px dashed #ffd9ec;border-radius:14px;padding:6px 10px;font-weight:800;font-size:12px;color:var(--brs)}
+.size-btn{padding:5px 14px;border-radius:10px;background:#fff;border:2px solid #ffe0ee;font-weight:800;font-size:12px}
+.size-btn.active{background:#ffd9ec;border-color:var(--pkd);color:var(--pkd)}
+.box-stage{flex:1;display:grid;place-items:center;padding:38px 8px 8px;position:relative;min-height:300px}
+.box{position:relative;border-radius:16px;background:#f9dcbb;box-shadow:inset 0 -18px 0 rgba(0,0,0,.07),0 14px 0 rgba(160,120,90,.22),0 22px 34px rgba(150,110,90,.28);transition:width .4s,height .4s;z-index:2;overflow:hidden}
+.box.sizeS{width:240px;height:190px}
+.box.sizeM{width:310px;height:240px}
+.box.sizeL{width:390px;height:295px}
+.box.sizeS .box-item{font-size:30px}
+.box.sizeM .box-item{font-size:36px}
+.box.sizeL .box-item{font-size:46px}
+.box.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.box-wrap{position:absolute;inset:0;border-radius:16px;pointer-events:none;opacity:.55}
+.box-flaps{position:absolute;top:-22px;left:0;width:100%;height:26px;pointer-events:none;z-index:5}
+.box-flaps i{position:absolute;bottom:0;width:50%;height:100%;background:#f2cfa6}
+.box-flaps i:first-child{left:0;border-radius:8px 4px 0 0;transform-origin:left bottom;transform:rotate(-16deg) translateY(-3px)}
+.box-flaps i:last-child{right:0;border-radius:4px 8px 0 0;transform-origin:right bottom;transform:rotate(16deg) translateY(-3px)}
+.box.sealed .box-flaps i{transform:rotate(0) translateY(0)}
+.box-items{position:absolute;inset:0;border-radius:16px;z-index:3}
+.box-item{position:absolute;font-size:36px;cursor:grab;user-select:none;touch-action:none}
+.box-stickers{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:4}
+.box-sticker{position:absolute;font-size:22px}
+.ribbon{position:absolute;inset:0;border-radius:16px;overflow:hidden;pointer-events:none;opacity:0;transition:opacity .35s;z-index:6}
+.ribbon.on{opacity:1}
+.ribbon::before{content:'';position:absolute;left:50%;top:0;width:15%;height:100%;transform:translateX(-50%);background:var(--rb)}
+.ribbon::after{content:'';position:absolute;top:44%;left:0;width:100%;height:15%;transform:translateY(-50%);background:var(--rb)}
+.ribbon .bow{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:32px;z-index:3}
+.note-card{position:absolute;top:14%;right:8%;width:70px;background:#fff6b0;border:1.5px solid #f0dd7a;border-radius:6px;padding:4px 5px;font-size:8px;font-weight:700;color:#8a6d1e;transform:rotate(9deg);z-index:7;max-height:64px;overflow:hidden;display:none}
+.note-card.show{display:block}
+.scent-hint{position:absolute;top:6%;left:8%;font-size:18px;z-index:7;display:none}
+.scent-hint.show{display:block}
+.stamp-mark{position:absolute;bottom:8%;left:8%;font-size:30px;opacity:0;transition:opacity .4s;z-index:7;transform:rotate(-15deg)}
+.stamp-mark.on{opacity:.85}
+.pack-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.decor-panel{max-height:660px;overflow-y:auto}
+.decor-section{margin-bottom:12px;border-bottom:1px dashed #f0e6ff;padding-bottom:11px}
+.decor-section:last-child{border-bottom:none}
+.decor-section label{font-size:11px;font-weight:800;color:var(--brs);text-transform:uppercase;letter-spacing:.9px;display:block;margin-bottom:7px}
+.swatches{display:flex;gap:6px;flex-wrap:wrap}
+.swatch{width:30px;height:30px;border-radius:11px;border:3px solid #fff}
+.swatch.active{outline:3px solid var(--pkd);outline-offset:2px}
+.wraps{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px}
+.wrap-btn{aspect-ratio:1;border-radius:10px;border:3px solid #fff;position:relative;overflow:hidden}
+.wrap-btn.active{outline:3px solid var(--pkd);outline-offset:2px}
+.wrap-btn .lbl{position:absolute;bottom:0;left:0;right:0;font-size:7.5px;font-weight:800;background:#ffffffcc;text-align:center;color:var(--br)}
+.ribbons{display:flex;gap:7px;flex-wrap:wrap}
+.ribbon-btn{width:32px;height:32px;border-radius:12px;border:3px solid #fff;display:grid;place-items:center;font-size:15px}
+.ribbon-btn.active{outline:3px solid var(--pkd);outline-offset:2px}
+.ribbon-btn.none{background:#f4f0f6;color:#bbb}
+.stickers{display:flex;gap:5px;flex-wrap:wrap;max-height:170px;overflow-y:auto;padding:2px}
+.sticker-btn{width:34px;height:34px;border-radius:11px;background:#fff;border:2px solid #f0e6ff;font-size:18px;display:grid;place-items:center}
+.perfumes{display:flex;gap:6px;flex-wrap:wrap}
+.perfume-btn{width:38px;height:38px;border-radius:12px;background:#fff;border:2px solid #f0e6ff;font-size:19px;display:grid;place-items:center;position:relative}
+.perfume-btn.active{outline:3px solid #b28cff;outline-offset:2px;background:#f6f0ff}
+.perfume-btn.req::after{content:'⭐';position:absolute;top:-6px;right:-6px;font-size:11px}
+.note-input{width:100%;border:2px solid #f0e6ff;border-radius:14px;padding:8px 10px;font-size:12px;font-weight:600;background:#fffdf5;color:var(--br);resize:vertical;min-height:60px;font-family:inherit}
+.note-templates{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tmpl-btn{font-size:10.5px;padding:4px 9px;border-radius:10px;background:#f6f0ff;border:1.5px solid #e7ddff;font-weight:700;color:var(--lvd)}
+.map-layout{display:grid;grid-template-columns:1fr 320px;gap:12px;align-items:start}
+.map-panel{padding:10px}
+.map{position:relative;width:100%;aspect-ratio:16/10;min-height:400px;background:#eaf8db;border-radius:20px;overflow:hidden;border:4px solid #fff}
+.road{position:absolute;background:#ddd6ca}
+.road.v{width:7.5%;height:100%;top:0;transform:translateX(-50%)}
+.road.h{height:9%;width:100%;left:0;transform:translateY(-50%)}
+.house{position:absolute;transform:translate(-50%,-50%);text-align:center;z-index:3}
+.house .h-emoji{font-size:27px;display:block}
+.house .h-name{font-size:8.5px;font-weight:800;background:#ffffffdd;border-radius:8px;padding:1px 5px;margin-top:2px;white-space:nowrap;color:var(--brs)}
+.house.target .h-emoji{animation:bounce .7s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.shop-house{position:absolute;transform:translate(-50%,-50%);text-align:center;z-index:4}
+.shop-house .h-emoji{font-size:32px;display:block}
+.shop-house .h-name{font-size:9px;font-weight:800;background:var(--sun);color:#fff;border-radius:8px;padding:1px 6px}
+#shipper{position:absolute;font-size:30px;transform:translate(-50%,-50%);z-index:8}
+#shipper .bubble{position:absolute;top:-24px;left:50%;transform:translateX(-50%);background:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:800;white-space:nowrap;color:var(--pkd)}
+.deliver-panel h3{font-size:16px;margin-bottom:10px}
+.deliver-card{background:#fff;border:2px solid #f0e6ff;border-radius:18px;padding:11px;margin-bottom:10px}
+.dc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dc-head .ava{width:36px;height:36px;font-size:19px;border-radius:12px}
+.dc-head b{font-size:14px;display:block}
+.dc-head small{font-size:10.5px;color:var(--brs);font-weight:700}
+.dc-body{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;font-weight:800}
+.dc-body .coin{color:var(--sund);font-size:15px}
+.deliver-card .btn{width:100%}
+.review-list{display:grid;gap:10px}
+.review-card{background:#fff;border:2px solid #f0e6ff;border-radius:18px;padding:12px;position:relative}
+.review-card.unread{border-color:#ffc9df;background:#fff4fa}
+.review-card.unread::before{content:'MỚI';position:absolute;top:-8px;right:12px;background:var(--pkd);color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px}
+.rc-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rc-head .ava{width:42px;height:42px;font-size:22px;border-radius:14px}
+.rc-head b{font-size:14px;display:block}
+.rc-head small{font-size:11px;color:var(--brs);font-weight:600}
+.rc-stars{color:var(--sund);font-size:15px;margin-left:auto}
+.rc-text{font-size:13px;font-weight:600;background:#faf6ff;border-radius:12px;padding:9px 11px;margin:6px 0;line-height:1.4}
+.rc-reply{font-size:12.5px;font-weight:600;background:#eaf7ff;border-radius:12px;padding:8px 11px;margin-top:6px;color:#2c6f9a;border-left:3px solid #5ca8ff}
+.rc-cust-response{font-size:12.5px;font-weight:700;background:#fff6ec;border-radius:12px;padding:8px 11px;margin-top:6px;color:#8a5a1e;border-left:3px solid var(--sund)}
+.rc-cust-response.angry{background:#ffe8ee;color:#a8254a;border-left-color:#ff6b8a}
+.rc-actions{display:flex;gap:8px;margin-top:8px}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
+.shop-card{background:#fff;border:2px solid #f0e6ff;border-radius:20px;padding:14px;text-align:center;position:relative}
+.shop-card .sc-emoji{font-size:36px;display:block;margin-bottom:6px}
+.shop-card h4{font-size:15px;margin-bottom:3px}
+.shop-card p{font-size:11.5px;color:var(--brs);font-weight:600;margin-bottom:10px;min-height:30px}
+.shop-card .price{font-weight:800;color:var(--sund);font-size:16px;margin-bottom:8px}
+.shop-card.owned{border-color:#bdf0d6;background:#f4fff9}
+.shop-card.owned::after{content:'✓ Đã mua';position:absolute;top:9px;right:9px;background:var(--mnd);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px}
+.modal{position:fixed;inset:0;background:rgba(90,60,85,.42);display:none;place-items:center;z-index:180;padding:16px;overflow-y:auto}
+.modal.show{display:grid}
+.modal-card{background:#fff;border-radius:28px;padding:22px;max-width:440px;width:100%;text-align:center;max-height:90vh;overflow-y:auto}
+.modal-card.wide{max-width:640px}
+.modal-card h3{font-size:21px;margin-bottom:6px;color:var(--pkd)}
+.modal-card p{font-size:13.5px;font-weight:600;color:var(--brs);margin-bottom:14px}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.mini-box{aspect-ratio:1;border-radius:16px;background:#ffe9f4;border:2px solid #ffd3e6;font-size:38px;display:grid;place-items:center}
+.mini-box.opened{background:#ffefd0;border-color:var(--sun);pointer-events:none}
+.tape-track{position:relative;height:38px;background:#f6eef8;border-radius:16px;overflow:hidden;margin-bottom:12px;border:2px solid #fff}
+.tape-zone{position:absolute;top:0;height:100%;background:#7fe0b0;border-radius:8px}
+.tape-marker{position:absolute;top:-3px;width:7px;height:44px;background:#ff4f95;border-radius:6px;transform:translateX(-50%)}
+.tape-rounds{font-weight:800;font-size:13px;color:var(--brs);margin-bottom:14px}
+.tape-rounds b{color:var(--pkd);font-size:17px}
+.stars-row{display:flex;justify-content:center;gap:6px;font-size:38px;margin:10px 0 12px}
+.reward-box{background:#ffefd0;border:2px dashed var(--sun);border-radius:18px;padding:12px;margin-bottom:14px}
+.reward-box .big{font-size:26px;font-weight:800;color:var(--sund)}
+.reward-box small{font-size:11px;font-weight:700;color:#c99a4a;display:block;margin-top:3px}
+.reward-box .penalty{color:#e05b90;font-size:12px;font-weight:800;display:block;margin-top:6px;background:#ffe4ef;border-radius:8px;padding:4px 8px}
+.review-msg{background:#faf6ff;border:2px solid #f0e6ff;border-radius:16px;padding:12px;margin-bottom:12px;font-size:13.5px;font-weight:600;line-height:1.45;text-align:left}
+.review-msg b{color:var(--lvd);display:block;font-size:11px;margin-bottom:4px;text-transform:uppercase}
+.reply-area{width:100%;border:2px solid #f0e6ff;border-radius:14px;padding:10px;font-size:13px;font-weight:600;background:#fff;color:var(--br);resize:vertical;min-height:70px;margin-bottom:10px;font-family:inherit}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap}
+.modal-btns .btn{flex:1;min-width:120px}
+.customer-reaction{background:#fff6ec;border:2px solid #ffd97d;border-radius:16px;padding:12px;margin:12px 0;font-weight:700;font-size:13.5px;color:#8a5a1e;text-align:left}
+.customer-reaction.angry{background:#ffe8ee;border-color:#ff6b8a;color:#a8254a}
+.free-search{width:100%;border:2px solid #f0e6ff;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:600;background:#fff;color:var(--br);font-family:inherit}
+.free-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:6px;max-height:400px;overflow-y:auto;padding:8px;background:#faf6ff;border-radius:16px;margin:10px 0 12px;border:2px solid #f0e6ff}
+.free-item{aspect-ratio:1;border-radius:12px;background:#fff;border:2px solid #f0e6ff;font-size:24px;display:grid;place-items:center}
+.free-count{font-size:11.5px;font-weight:700;color:var(--brs);background:#faf6ff;border-radius:10px;padding:5px 10px;display:inline-block;margin-bottom:8px}
+#toasts{position:fixed;top:16px;right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#fff;border-radius:16px;padding:11px 16px;font-weight:800;font-size:13.5px;border-left:6px solid var(--lvd);max-width:290px;transition:.3s}
+.toast.ok{border-left-color:var(--mnd)}
+.toast.warn{border-left-color:var(--sund)}
+.toast.err{border-left-color:#ff6b8a}
+#dbg{position:fixed;bottom:0;left:0;background:#000c;color:#0f0;font:11px monospace;padding:4px 10px;z-index:99999;border-radius:0 8px 0 0;max-width:100vw;overflow:hidden;white-space:nowrap}
+#dbg.err{background:#c00;color:#fff}
+@media(max-width:1000px){.pack-layout,.map-layout{grid-template-columns:1fr}.shelf{max-height:220px}.decor-panel{max-height:none}}
+@media(max-width:640px){body{padding:8px}.box.sizeS{width:200px;height:160px}.box.sizeM{width:250px;height:200px}.box.sizeL{width:300px;height:230px}.order-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="dbg">⏳ JS đang tải...</div>
+
+<aside class="drawer" id="drawer">
+<div class="drawer-head"><h3>⚙️ Menu</h3><button class="drawer-close" id="drawerClose">✕</button></div>
+<div class="drawer-section"><label>🎵 Nhạc nền</label><div class="track-list" id="trackList"></div></div>
+<div class="drawer-section"><label>🔊 Âm lượng</label><div class="vol-row"><span>🔉</span><input type="range" id="volSlider" min="0" max="100" value="80"><b id="volVal">80</b></div></div>
+<div class="drawer-section"><label>🎨 Giao diện</label><div class="theme-row" id="themeRow"></div></div>
+<div class="drawer-section"><label>🌍 Quốc gia</label><div class="country-row" id="countryRow"></div></div>
+<div class="drawer-section"><label>🎮 Minigame & Event</label>
+<button class="btn lav tiny" id="eventBtn" style="width:100%;margin-bottom:6px">🎉 Nhận quà may mắn</button>
+<button class="btn primary tiny" id="tapGameBtn" style="width:100%">🎯 Minigame đập hộp</button></div>
+<div class="drawer-section"><label>📊 Thống kê</label><div class="stats-list" id="statsList"></div></div>
+<div class="drawer-section"><label>💾 Dữ liệu</label>
+<button class="btn ghost tiny" id="saveNowBtn" style="width:100%;margin-bottom:6px">💾 Lưu ngay</button>
+<button class="btn ghost tiny" id="resetBtn2" style="width:100%">🗑️ Xoá dữ liệu</button></div>
+</aside>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<div class="game">
+<header class="topbar">
+<button class="hamburger" id="hamburger">☰</button>
+<div class="brand"><span class="logo">📦</span><span id="brandFlag">🇻🇳</span><div><h1>Gói Hàng Cute 3.0</h1><p class="sub">Deluxe Shop Simulator</p></div></div>
+<div class="stats">
+<div class="stat" title="Xu"><span>🪙</span><b id="statCoins">0</b></div>
+<div class="stat" title="Cấp"><span>⭐</span><b id="statLevel">1</b></div>
+<div class="stat" title="Đã giao"><span>📬</span><b id="statDelivered">0</b></div>
+<div class="stat" title="Ngày"><span>📅</span><b id="statDay">1</b></div>
+</div>
+<div class="xpwrap"><div class="xpbar"><i id="xpFill"></i></div><small id="xpText">0 / 125 XP</small></div>
+<button class="icon-btn on" id="soundBtn">🔊</button>
+<button class="icon-btn" id="musicBtn">🎵</button>
+</header>
+<nav class="tabs">
+<button class="tab active" data-view="orders">📋 Đơn hàng <span class="badge" id="badgeOrders" data-zero="1">0</span></button>
+<button class="tab" data-view="pack">🎁 Đóng gói</button>
+<button class="tab" data-view="map">🛵 Giao hàng <span class="badge" id="badgeReady" data-zero="1">0</span></button>
+<button class="tab" data-view="reviews">💬 Đánh giá <span class="badge" id="badgeReviews" data-zero="1">0</span></button>
+<button class="tab" data-view="shop">🛍️ Cửa hàng</button>
+</nav>
+<main>
+<section class="view active" id="view-orders"><div class="panel"><div class="panel-head"><h2>📋 Đơn hàng mới</h2><button class="btn ghost tiny" id="refreshOrders">🔄 Làm mới (15🪙)</button></div><div class="order-grid" id="orderList"></div></div></section>
+<section class="view" id="view-pack"><div class="pack-layout">
+<aside class="panel shelf-panel"><h3>🧺 Kệ hàng</h3><div class="shelf" id="shelf"></div></aside>
+<div class="panel box-panel">
+<div class="pack-head"><div class="who" id="packOrderInfo">📭 Chưa chọn đơn hàng</div><div class="pack-progress"><div class="progress"><i id="packFill"></i></div><span id="packText">0/0</span></div></div>
+<div class="task-note" id="taskNote" style="display:none"></div>
+<div class="box-size-row"><span>📦 Cỡ hộp:</span>
+<button class="size-btn" data-size="S">Nhỏ</button>
+<button class="size-btn active" data-size="M">Vừa</button>
+<button class="size-btn" data-size="L">Lớn</button>
+</div>
+<div class="box-stage"><div class="box sizeM" id="box"><div class="box-wrap" id="boxWrap"></div><div class="box-flaps"><i></i><i></i></div><div class="box-items" id="boxItems"></div><div class="box-stickers" id="boxStickers"></div><div class="note-card" id="boxNote"></div><div class="scent-hint" id="boxScent"></div><div class="stamp-mark" id="boxStamp">💮</div><div class="ribbon" id="boxRibbon"><span class="bow">🎀</span></div></div></div>
+<div class="pack-actions">
+<button class="btn ghost" id="resetPack">↺ Làm lại</button>
+<button class="btn lav" id="freeAddBtn">➕ Thêm món tự do</button>
+<button class="btn mint" id="stampBtn">💮 Đóng dấu</button>
+<button class="btn primary" id="sealBtn" disabled>📦 Dán keo & Niêm phong</button>
+</div>
+</div>
+<aside class="panel decor-panel">
+<h3>🎨 Trang trí</h3>
+<div class="decor-section"><label>🎨 Màu hộp</label><div class="swatches" id="swatches"></div></div>
+<div class="decor-section"><label>🎁 Giấy gói</label><div class="wraps" id="wraps"></div></div>
+<div class="decor-section"><label>🎀 Ruy băng</label><div class="ribbons" id="ribbons"></div></div>
+<div class="decor-section"><label>✨ Sticker</label><div class="stickers" id="stickers"></div></div>
+<div class="decor-section"><label>💐 Nước hoa <span id="perfumeHint" style="color:#b28cff;text-transform:none"></span></label><div class="perfumes" id="perfumes"></div></div>
+<div class="decor-section"><label>📝 Ghi chú</label><textarea class="note-input" id="noteInput" placeholder="Viết lời nhắn..." maxlength="120"></textarea><div class="note-templates" id="noteTemplates"></div></div>
+<button class="btn ghost tiny" id="clearDecor" style="width:100%">🧹 Xoá hết trang trí</button>
+</aside>
+</div></section>
+<section class="view" id="view-map"><div class="map-layout"><div class="panel map-panel"><div class="map" id="map"></div></div><aside class="panel deliver-panel"><h3>🛵 Giao hàng</h3><div id="deliverList"></div></aside></div></section>
+<section class="view" id="view-reviews"><div class="panel"><div class="panel-head"><h2>💬 Đánh giá từ khách</h2></div><div class="review-list" id="reviewList"></div></div></section>
+<section class="view" id="view-shop"><div class="panel"><div class="panel-head"><h2>🛍️ Nâng cấp cửa hàng</h2><span class="muted" style="padding:0">Ví: <b id="shopCoins">0</b> 🪙</span></div><div class="shop-grid" id="shopList"></div></div></section>
+</main>
+</div>
+
+<div class="modal" id="tapeModal"><div class="modal-card"><h3>🎀 Dán băng keo!</h3><p>Nhấn DỪNG khi thanh trượt trong vùng xanh!</p><div class="tape-track"><div class="tape-zone" id="tapeZone"></div><div class="tape-marker" id="tapeMarker"></div></div><div class="tape-rounds">Lượt <b id="tapeRound">1</b> / 3 · Chuẩn: <b id="tapeGood">0</b></div><button class="btn primary" id="tapeBtn" style="width:100%">DỪNG!</button></div></div>
+<div class="modal" id="rateModal"><div class="modal-card"><h3 id="rateTitle">🎉 Giao thành công!</h3><p id="rateSub"></p><div class="stars-row" id="rateStars"></div><div class="reward-box"><div class="big" id="rateCoins">+0 🪙</div><small id="rateXp">+0 XP</small><span class="penalty" id="ratePenalty" style="display:none"></span></div><button class="btn primary" id="rateGoReview" style="width:100%;margin-bottom:8px">💬 Xem đánh giá</button><button class="btn ghost" id="rateClose" style="width:100%">Đóng</button></div></div>
+<div class="modal" id="reviewModal"><div class="modal-card"><h3>💬 Đánh giá từ khách</h3><p id="revSub"></p><div id="revAvaBox" style="margin-bottom:8px"></div><div class="review-msg" id="revMsg"></div><textarea class="reply-area" id="replyInput" placeholder="Viết trả lời..."></textarea><div class="note-templates" id="replyTemplates" style="justify-content:center;margin-bottom:10px"></div><div class="modal-btns"><button class="btn ghost" id="revSkip">Bỏ qua</button><button class="btn primary" id="revSend">💌 Gửi</button></div></div></div>
+<div class="modal" id="reactModal"><div class="modal-card"><h3 id="reactTitle">Khách đã trả lời!</h3><div id="reactAva" style="font-size:56px;margin:6px 0"></div><div class="customer-reaction" id="reactText"></div><div class="reward-box" id="reactReward" style="display:none"><div class="big" id="reactCoins">+0 🪙</div><small id="reactXp">+0 XP</small></div><button class="btn mint" id="reactClose" style="width:100%">Đã hiểu 💗</button></div></div>
+<div class="modal" id="freeAddModal"><div class="modal-card wide">
+<h3>➕ Thêm món tự do</h3>
+<p>Nhồi quá 2 món tặng là khách sẽ cáu đó!</p>
+<input type="text" class="free-search" id="freeSearch" placeholder="🔍 Tìm món...">
+<div class="free-count" id="freeCount">Đang có 0 món tự do</div>
+<div class="free-grid" id="freeGrid"></div>
+<div class="modal-btns"><button class="btn ghost" id="freeClear">🧹 Xoá</button><button class="btn primary" id="freeClose">Xong ✨</button></div>
+</div></div>
+<div class="modal" id="gameModal"><div class="modal-card">
+<h3>🎯 Đập hộp may mắn</h3>
+<p>Chọn 1 trong 6 hộp!</p>
+<div class="mini-grid" id="miniGrid"></div>
+<button class="btn ghost" id="miniClose" style="width:100%">Đóng</button>
+</div></div>
+<div id="toasts"></div>
+
+<script>
+var DBG=document.getElementById('dbg');
+function dbg(msg,isErr){if(DBG){DBG.textContent=msg;DBG.className=isErr?'err':'';}if(isErr)console.error(msg);else console.log(msg);}
+dbg('⏳ JS đang khởi động...');
+
+try{
+
+var SAVE_VERSION=3;
+var SAVE_KEY='goiHangCute3_v3';
+var S={coins:200,xp:0,level:1,day:1,sound:true,music:false,volume:80,trackIdx:0,theme:'pink',country:'vn',orders:[],pack:null,ready:[],delivering:null,deliveredCount:0,upgrades:{},reviews:[],currentReviewId:null,view:'orders'};
+var orderSeq=100,animId=null,tapeState=null,tapeLastTs=0,audioCtx=null,musicTimer=null,musicStep=0,drawerOpen=false;
+
+var THEMES=[
+{id:'pink',name:'Hồng',pk:'#ffb3d1',pkd:'#ff7fb0',lvd:'#9b7bff',mnd:'#5fcf9e',sun:'#ffd97d',sund:'#ffb347'},
+{id:'mint',name:'Mint',pk:'#a8e6cf',pkd:'#5fcf9e',lvd:'#5ca8ff',mnd:'#7ed3b2',sun:'#ffeaa7',sund:'#f5b041'},
+{id:'sky',name:'Biển',pk:'#a8d8ff',pkd:'#5ca8ff',lvd:'#7b8fff',mnd:'#5fcf9e',sun:'#ffd97d',sund:'#ffb347'},
+{id:'lav',name:'Tím',pk:'#d9c8ff',pkd:'#b28cff',lvd:'#8b6bff',mnd:'#a8e6cf',sun:'#ffd97d',sund:'#ffb347'},
+{id:'sunset',name:'Cam',pk:'#ffc3a0',pkd:'#ff9a76',lvd:'#d97b9b',mnd:'#a8e6cf',sun:'#ffd97d',sund:'#ff7f50'},
+{id:'sakura',name:'Sakura',pk:'#ffc6d9',pkd:'#ff85a2',lvd:'#c9a0ff',mnd:'#a8e6cf',sun:'#ffd97d',sund:'#ffb347'}
+];
+var COUNTRIES=[{id:'vn',name:'Việt Nam',flag:'🇻🇳'},{id:'jp',name:'Nhật',flag:'🇯🇵'},{id:'kr',name:'Hàn',flag:'🇰🇷'},{id:'us',name:'Mỹ',flag:'🇺🇸'},{id:'fr',name:'Pháp',flag:'🇫🇷'},{id:'th',name:'Thái',flag:'🇹🇭'}];
+var TRACKS=[
+{name:'🎹 Anime vui',mel:[0,2,4,7,9,7,4,2,0,4,7,9,12,9,7,4],bass:[0,0,5,5,7,7,5,5],tempo:420},
+{name:'🌙 Ru êm',mel:[0,3,5,7,10,7,5,3,0,5,7,10,12,10,7,5],bass:[-5,-5,0,0,2,2,0,0],tempo:540},
+{name:'🌸 Piano yên',mel:[0,4,7,12,7,4,0,7,5,9,12,9,5,2,0,5],bass:[-12,-12,-7,-7,-5,-5,-7,-7],tempo:500},
+{name:'✨ Lấp lánh',mel:[7,9,11,12,11,9,7,4,5,7,9,7,5,4,2,0],bass:[0,0,5,5,3,3,-2,-2],tempo:360}
+];
+var ITEMS=[
+{id:'teddy',name:'Gấu bông',emoji:'🧸'},{id:'bear',name:'Gấu nâu',emoji:'🐻'},{id:'rabbit',name:'Thỏ bông',emoji:'🐰'},{id:'cat',name:'Mèo con',emoji:'🐱'},{id:'panda',name:'Gấu trúc',emoji:'🐼'},{id:'unicorn',name:'Kỳ lân',emoji:'🦄'},
+{id:'cake',name:'Bánh kem',emoji:'🍰'},{id:'cupcake',name:'Cupcake',emoji:'🧁'},{id:'candy',name:'Kẹo',emoji:'🍬'},{id:'lolli',name:'Kẹo mút',emoji:'🍭'},{id:'choc',name:'Socola',emoji:'🍫'},{id:'cookie',name:'Bánh quy',emoji:'🍪'},{id:'donut',name:'Donut',emoji:'🍩'},{id:'icecream',name:'Kem',emoji:'🍦'},{id:'pie',name:'Bánh pie',emoji:'🥧'},{id:'macaron',name:'Macaron',emoji:'🍮'},
+{id:'pizza',name:'Pizza',emoji:'🍕'},{id:'burger',name:'Burger',emoji:'🍔'},{id:'crois',name:'Croissant',emoji:'🥐'},{id:'apple',name:'Táo đỏ',emoji:'🍎'},{id:'strawb',name:'Dâu tây',emoji:'🍓'},{id:'boba',name:'Trà sữa',emoji:'🧋'},
+{id:'ring',name:'Nhẫn',emoji:'💍'},{id:'necklace',name:'Dây chuyền',emoji:'📿'},{id:'gem',name:'Đá quý',emoji:'💎'},{id:'crown',name:'Vương miện',emoji:'👑'},
+{id:'phone',name:'Điện thoại',emoji:'📱'},{id:'laptop',name:'Laptop',emoji:'💻'},{id:'headphone',name:'Tai nghe',emoji:'🎧'},{id:'watch',name:'Đồng hồ',emoji:'⌚'},{id:'camera',name:'Máy ảnh',emoji:'📷'},{id:'game',name:'Game',emoji:'🎮'},{id:'console',name:'Máy chơi',emoji:'🕹️'},
+{id:'shoe',name:'Giày',emoji:'👟'},{id:'shirt',name:'Áo',emoji:'👕'},{id:'dress',name:'Váy',emoji:'👗'},{id:'hat',name:'Mũ',emoji:'👒'},{id:'scarf',name:'Khăn',emoji:'🧣'},{id:'bag',name:'Túi xách',emoji:'👜'},
+{id:'flower',name:'Hoa',emoji:'💐'},{id:'rose',name:'Hoa hồng',emoji:'🌹'},{id:'sun',name:'Hướng dương',emoji:'🌻'},{id:'plant',name:'Cây',emoji:'🪴'},{id:'cactus',name:'Xương rồng',emoji:'🌵'},
+{id:'book',name:'Sách',emoji:'📚'},{id:'pencil',name:'Bút',emoji:'✏️'},{id:'art',name:'Đồ vẽ',emoji:'🎨'},{id:'perfume',name:'Nước hoa',emoji:'🧴'},{id:'balloon',name:'Bóng bay',emoji:'🎈'},{id:'gift',name:'Quà',emoji:'🎁'},{id:'wand',name:'Đũa phép',emoji:'🪄'},{id:'orb',name:'Quả cầu',emoji:'🔮'},{id:'music',name:'Nhạc cụ',emoji:'🎸'},{id:'piano',name:'Piano',emoji:'🎹'},
+{id:'ramen',name:'Mì ramen',emoji:'🍜'},{id:'sushi',name:'Sushi',emoji:'🍣'},{id:'taco',name:'Taco',emoji:'🌮'},{id:'burrito',name:'Burrito',emoji:'🌯'},{id:'fries',name:'Khoai tây',emoji:'🍟'},{id:'popcorn',name:'Bỏng ngô',emoji:'🍿'},{id:'pretzel',name:'Pretzel',emoji:'🥨'},{id:'bagel',name:'Bagel',emoji:'🥯'},{id:'waffle',name:'Waffle',emoji:'🧇'},{id:'pancake',name:'Pancake',emoji:'🥞'},
+{id:'cheese',name:'Phô mai',emoji:'🧀'},{id:'bacon',name:'Thịt xông khói',emoji:'🥓'},{id:'egg',name:'Trứng',emoji:'🥚'},{id:'bread',name:'Bánh mì',emoji:'🍞'},{id:'rice',name:'Cơm',emoji:'🍚'},{id:'curry',name:'Cà ri',emoji:'🍛'},{id:'dumpling',name:'Bánh bao',emoji:'🥟'},{id:'shrimp',name:'Tôm',emoji:'🍤'},{id:'crab',name:'Cua',emoji:'🦀'},{id:'squid',name:'Mực',emoji:'🦑'},{id:'octopus',name:'Bạch tuộc',emoji:'🐙'},{id:'fish',name:'Cá',emoji:'🐟'},{id:'tropical',name:'Cá nhiệt đới',emoji:'🐠'},{id:'whale',name:'Cá voi',emoji:'🐳'},{id:'dolphin',name:'Cá heo',emoji:'🐬'},
+{id:'banana',name:'Chuối',emoji:'🍌'},{id:'grapes',name:'Nho',emoji:'🍇'},{id:'watermelon',name:'Dưa hấu',emoji:'🍉'},{id:'melon',name:'Dưa lưới',emoji:'🍈'},{id:'orange',name:'Cam',emoji:'🍊'},{id:'lemonFruit',name:'Chanh vàng',emoji:'🍋'},{id:'peach',name:'Đào',emoji:'🍑'},{id:'cherry',name:'Anh đào',emoji:'🍒'},{id:'mango',name:'Xoài',emoji:'🥭'},{id:'pineapple',name:'Dứa',emoji:'🍍'},{id:'coconut',name:'Dừa',emoji:'🥥'},{id:'kiwi',name:'Kiwi',emoji:'🥝'},
+{id:'tomato',name:'Cà chua',emoji:'🍅'},{id:'avocado',name:'Bơ',emoji:'🥑'},{id:'eggplant',name:'Cà tím',emoji:'🍆'},{id:'potato',name:'Khoai tây',emoji:'🥔'},{id:'carrot',name:'Cà rốt',emoji:'🥕'},{id:'corn',name:'Ngô',emoji:'🌽'},{id:'pepper',name:'Ớt',emoji:'🌶️'},{id:'cucumber',name:'Dưa chuột',emoji:'🥒'},{id:'broccoli',name:'Súp lơ',emoji:'🥦'},{id:'mushroom',name:'Nấm',emoji:'🍄'},{id:'chestnut',name:'Hạt dẻ',emoji:'🌰'},{id:'peanut',name:'Đậu phộng',emoji:'🥜'},{id:'honey',name:'Mật ong',emoji:'🍯'},{id:'jam',name:'Mứt',emoji:'🫙'},
+{id:'key',name:'Chìa khoá',emoji:'🔑'},{id:'lock',name:'Ổ khoá',emoji:'🔒'},{id:'bell',name:'Chuông',emoji:'🔔'},{id:'lantern',name:'Đèn lồng',emoji:'🏮'},{id:'candle',name:'Nến',emoji:'🕯️'},{id:'lamp',name:'Đèn',emoji:'💡'},{id:'flashlight',name:'Đèn pin',emoji:'🔦'},{id:'magGlass',name:'Kính lúp',emoji:'🔍'},{id:'telescope',name:'Kính viễn vọng',emoji:'🔭'},{id:'microscope',name:'Kính hiển vi',emoji:'🔬'},
+{id:'hourglass',name:'Đồng hồ cát',emoji:'⏳'},{id:'alarm',name:'Đồng hồ báo',emoji:'⏰'},{id:'calendar',name:'Lịch',emoji:'📅'},{id:'map',name:'Bản đồ',emoji:'🗺️'},{id:'compass',name:'La bàn',emoji:'🧭'},{id:'backpack',name:'Ba lô',emoji:'🎒'},{id:'umbrella',name:'Ô',emoji:'☂️'},{id:'glasses',name:'Kính',emoji:'👓'},{id:'sunglasses',name:'Kính râm',emoji:'🕶️'},
+{id:'ring2',name:'Nhẫn KC',emoji:'💍'},{id:'crown2',name:'Vương miện vàng',emoji:'👑'},{id:'medal',name:'Huy chương',emoji:'🎖️'},{id:'trophy',name:'Cúp',emoji:'🏆'},
+{id:'butterfly',name:'Bướm',emoji:'🦋'},{id:'bee',name:'Ong',emoji:'🐝'},{id:'ladybug',name:'Bọ rùa',emoji:'🐞'},{id:'snail',name:'Ốc sên',emoji:'🐌'},{id:'turtle',name:'Rùa',emoji:'🐢'},{id:'snake',name:'Rắn',emoji:'🐍'},{id:'dragon',name:'Rồng',emoji:'🐉'},{id:'dino',name:'Khủng long',emoji:'🦕'},{id:'trex',name:'T-rex',emoji:'🦖'},{id:'shark',name:'Cá mập',emoji:'🦈'},{id:'unicorn2',name:'Kỳ lân 2',emoji:'🦄'},{id:'phoenix',name:'Phượng hoàng',emoji:'🦅'},
+{id:'heart',name:'Trái tim',emoji:'❤️'},{id:'star',name:'Ngôi sao',emoji:'⭐'},{id:'moon',name:'Mặt trăng',emoji:'🌙'},{id:'sun2',name:'Mặt trời',emoji:'☀️'},{id:'cloud',name:'Đám mây',emoji:'☁️'},{id:'rainbow',name:'Cầu vồng',emoji:'🌈'},{id:'snowflake',name:'Bông tuyết',emoji:'❄️'},{id:'fire',name:'Lửa',emoji:'🔥'},{id:'sparkles',name:'Lấp lánh',emoji:'✨'},{id:'clover',name:'Cỏ 4 lá',emoji:'🍀'},{id:'moon2',name:'Trăng liềm',emoji:'🌛'},{id:'globe',name:'Địa cầu',emoji:'🌍'},{id:'comet',name:'Sao băng',emoji:'☄️'},{id:'crystal',name:'Pha lê',emoji:'🔮'}
+];
+var CUSTOMERS=[
+{name:'Bé Na',emoji:'🐱',personality:'vui vẻ'},{name:'Chị Mai',emoji:'🐰',personality:'dễ tính'},{name:'Anh Khoa',emoji:'🐻',personality:'hài hước'},{name:'Cô Lan',emoji:'🦊',personality:'khó tính'},{name:'Bé Tí',emoji:'🐼',personality:'trẻ con'},{name:'Chị Hoa',emoji:'🐨',personality:'dịu dàng'},{name:'Anh Dũng',emoji:'🐯',personality:'nghiêm khắc'},{name:'Bé Bống',emoji:'🐸',personality:'vui vẻ'},{name:'Chú Tám',emoji:'🐵',personality:'hài hước'},{name:'Chị Thảo',emoji:'🦄',personality:'sang chảnh'},{name:'Bé Miu',emoji:'🐧',personality:'đáng yêu'},{name:'Anh Nam',emoji:'🐺',personality:'lạnh lùng'},{name:'Bé Sóc',emoji:'🐿️',personality:'năng động'},{name:'Cô Bưởi',emoji:'🐮',personality:'chậm rãi'},{name:'Chị Vy',emoji:'🦋',personality:'cầu toàn'},{name:'Anh Bảo',emoji:'🐲',personality:'ngầu'},{name:'Bé Gạo',emoji:'🐣',personality:'hồn nhiên'},{name:'Chị Nhung',emoji:'🦢',personality:'dịu dàng'},{name:'Bà Tư',emoji:'🐢',personality:'kỹ tính'},{name:'Bé Bắp',emoji:'🌽',personality:'vui vẻ'},{name:'Anh Huy',emoji:'🦁',personality:'tốt bụng'},{name:'Chị Linh',emoji:'🦉',personality:'thông thái'},{name:'Bé Khoai',emoji:'🐹',personality:'nhút nhát'},{name:'Chị Quỳnh',emoji:'🦜',personality:'nói nhiều'},{name:'Anh Sơn',emoji:'🐗',personality:'cộc cằn'},{name:'Bé Xoài',emoji:'🦝',personality:'tinh nghịch'},{name:'Chú Bảy',emoji:'🐊',personality:'điềm tĩnh'},{name:'Chị Trúc',emoji:'🦩',personality:'điệu đà'},{name:'Anh Hùng',emoji:'🦏',personality:'mạnh mẽ'},{name:'Bé Tép',emoji:'🦐',personality:'lí lắc'},{name:'Cô Hạnh',emoji:'🐘',personality:'phúc hậu'},{name:'Chị Yến',emoji:'🕊️',personality:'nhẹ nhàng'}
+];
+var HOUSES=[{name:'Nhà Bé Na',x:22,y:12,emoji:'🏠'},{name:'Nhà Chị Mai',x:50,y:22,emoji:'🏡'},{name:'Nhà Anh Khoa',x:78,y:13,emoji:'🏘️'},{name:'Nhà Cô Lan',x:22,y:62,emoji:'🏠'},{name:'Nhà Bé Tí',x:50,y:68,emoji:'🏡'},{name:'Nhà Chị Hoa',x:78,y:58,emoji:'🏘️'}];
+var BOX_COLORS=['#f9dcbb','#ffd4e5','#d6f0ff','#d9f7d0','#e6daff','#ffe9b8','#ffd8c2','#c8f2ec','#f5d9ff','#e8e2d6','#ffc9d9','#b8e0ff','#ffe0c2','#d4e8ff','#c9ffdd','#ffd9e8','#f0d9ff','#fff2b8','#e0f0e0','#f5e0d0'];
+var WRAPS=[{id:null,name:'Không',css:''},{id:'dots',name:'Chấm',css:'radial-gradient(circle,#ffffff88 3px,transparent 3.5px) 0 0/22px 22px'},{id:'stripes',name:'Sọc',css:'repeating-linear-gradient(45deg,#ffffff66 0 8px,transparent 8px 16px)'},{id:'hearts',name:'Tim',css:'radial-gradient(circle at 30% 30%,#ff7fb088 2px,transparent 3px),radial-gradient(circle at 70% 70%,#ff7fb088 2px,transparent 3px) 0 0/24px 24px'},{id:'stars',name:'Sao',css:'radial-gradient(circle,#ffd97dcc 2px,transparent 3px) 0 0/20px 20px'},{id:'plaid',name:'Carô',css:'repeating-linear-gradient(0deg,#ffffff55 0 2px,transparent 2px 14px),repeating-linear-gradient(90deg,#ffffff55 0 2px,transparent 2px 14px)'},{id:'clouds',name:'Mây',css:'radial-gradient(ellipse 18px 8px at 50% 60%,#ffffffaa,transparent 70%) 0 0/40px 30px'},{id:'leaves',name:'Lá',css:'radial-gradient(ellipse 6px 10px at 50% 50%,#b8e0a0aa,transparent 70%) 0 0/28px 28px'},{id:'waves',name:'Sóng',css:'repeating-radial-gradient(circle at 0 0,transparent 0,#ffffff55 4px,transparent 8px)'}];
+var RIBBONS=[{id:null,color:'transparent',emoji:'🚫',label:'Không'},{id:'red',color:'#ff5c8a',emoji:'🎀',label:'Hồng'},{id:'blue',color:'#5ca8ff',emoji:'💙',label:'Xanh'},{id:'gold',color:'#ffc94d',emoji:'💛',label:'Vàng'},{id:'mint',color:'#5fcf9e',emoji:'💚',label:'Mint'},{id:'purple',color:'#b28cff',emoji:'💜',label:'Tím'},{id:'red2',color:'#e63946',emoji:'❤️',label:'Đỏ'},{id:'black',color:'#2b2b2b',emoji:'🖤',label:'Đen'},{id:'teal',color:'#4dd0c9',emoji:'💚',label:'Ngọc'},{id:'orange',color:'#ffa94d',emoji:'🧡',label:'Cam'}];
+var STICKERS_BASE=['⭐','❤️','🌸','🌈','🍀','✨','🐱','🎀','🍓','☁️','🌟','🐰','🍭','🍰','🎂','🎉','🎊','🎁','💝','💖','💕','💗','💓','🥰','😍','🤗','🥳','😊','😇','🦋','🌺','🌷','🌼','🌻','🌹','🍬','🐶','🐷','🐮','🐸','🐵','🐔','🐤','🦆','🦉','🐝','🐞','🐌','🌙','☀️','⛅','❄️','🔥','💧','🌊','🍁','🌴','🌵','🌾','🍄'];
+var STICKERS_VIP=['👑','💎','🦄','🔥','🍫','🪄','💐','🎈','🌟','💫','🐉','🌈','🍒','🥇','🏆','💯','🦕','🦖','🦈','🐳','🐬','🦔','🦇','🦜','🦚','🦩','🦢','🔮','🌠','🌌','🪐','🌞','⚡','💥'];
+var PERFUMES=[{id:null,name:'Không',emoji:'🚫'},{id:'rose',name:'Hoa hồng',emoji:'🌹',cloud:'🌸'},{id:'jasmine',name:'Hoa nhài',emoji:'🌼',cloud:'🌼'},{id:'lemon',name:'Chanh',emoji:'🍋',cloud:'🍋'},{id:'berry',name:'Dâu',emoji:'🍓',cloud:'🍓'},{id:'choco',name:'Socola',emoji:'🍫',cloud:'🍫'},{id:'mint',name:'Bạc hà',emoji:'🌿',cloud:'🌿'},{id:'vanilla',name:'Vanilla',emoji:'🍦',cloud:'🍦'},{id:'cherry',name:'Anh đào',emoji:'🍒',cloud:'🍒'},{id:'lavender',name:'Oải hương',emoji:'💜',cloud:'💜'},{id:'coconut',name:'Dừa',emoji:'🥥',cloud:'🥥'}];
+var NOTE_TEMPLATES=['Cảm ơn bạn đã ủng hộ shop 💖','Chúc bạn một ngày tốt lành ✨','Hàng xinh gửi bạn nè 🎀','Mong bạn thích món này! 🥰','Yêu thương gửi bạn 💕','Cảm ơn bạn đã tin tưởng shop 🌸'];
+var REVIEW_TEXTS={5:['Wao gói hàng xinh quá! Shop đóng gói siêu kỹ 🥰','Giao nhanh, hàng đẹp, 10 điểm!','Mở hộp ra là thấy thương liền 💖','Sản phẩm đúng mô tả, đóng gói cute!'],4:['Hàng xinh, đóng gói ổn. Giao hơi lâu chút 😊','Mọi thứ ổn áp, gói hàng đẹp 💕','Hàng đẹp! Lần sau thêm note là đỉnh!'],3:['Hàng ổn nhưng đóng gói hơi sơ sài.','Bình thường, giao hơi trễ 😅','Hàng đúng nhưng mở ra không đặc biệt lắm.'],2:['Hơi thất vọng, hàng giao lộn món.','Shipper giao chậm, hàng bị móp 😕','Đóng gói chưa kỹ, không hài lòng.'],1:['Quá tệ! Hàng lộn tùm lum!','Đóng gói ẩu, hàng bị hỏng 😡','Thất vọng vô cùng!!!']};
+var SHOP_ITEMS=[{id:'shoes',name:'Giày êm',emoji:'👟',desc:'Shipper nhanh hơn 35%',price:160},{id:'scooter',name:'Xe máy',emoji:'🛵',desc:'Shipper nhanh hơn 80%',price:420},{id:'gloves',name:'Găng tay',emoji:'🧤',desc:'Bớt lỗi bỏ nhầm món',price:220},{id:'vip',name:'Thẻ VIP',emoji:'💳',desc:'+25% tiền thưởng',price:380},{id:'robot',name:'Robot dán keo',emoji:'🤖',desc:'Băng keo luôn hoàn hảo',price:520},{id:'bigbox',name:'Hộp đại',emoji:'📦',desc:'Đơn nhiều món hơn',price:300},{id:'stickerpack',name:'Bộ sticker xịn',emoji:'✨',desc:'Mở khoá sticker hiếm',price:260},{id:'ad',name:'Quảng cáo',emoji:'📣',desc:'Nhiều đơn hơn',price:200},{id:'perfumeUp',name:'Bộ nước hoa',emoji:'🌸',desc:'Khách yêu cầu mùi cụ thể',price:280},{id:'premiumPaper',name:'Giấy gói xịn',emoji:'🎀',desc:'Thêm giấy gói đẹp',price:240}];
+
+function $(s){return document.querySelector(s);}
+function $$(s){return document.querySelectorAll(s);}
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pk(a){return a[Math.floor(Math.random()*a.length)];}
+function sh(a){var r=a.slice();for(var i=r.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=r[i];r[i]=r[j];r[j]=t;}return r;}
+function cl(v,a,b){return Math.max(a,Math.min(b,v));}
+function uid(){return Math.random().toString(36).slice(2,9);}
+function repeatStr(s,n){var r='';for(var i=0;i<n;i++)r+=s;return r;}
+
+function saveGame(){
+  try{
+    if(!S||!S.upgrades)return;
+    var data={v:SAVE_VERSION,coins:S.coins,xp:S.xp,level:S.level,day:S.day,sound:S.sound,music:S.music,volume:S.volume,trackIdx:S.trackIdx,theme:S.theme,country:S.country,deliveredCount:S.deliveredCount,upgrades:S.upgrades,orders:S.orders,pack:S.pack,ready:S.ready,reviews:S.reviews,view:S.view,orderSeq:orderSeq,savedAt:Date.now()};
+    localStorage.setItem(SAVE_KEY,JSON.stringify(data));
+  }catch(e){}
+}
+function loadGame(){
+  try{
+    var raw=null;
+    try{raw=localStorage.getItem(SAVE_KEY);}catch(e){return false;}
+    if(!raw)return false;
+    var d=JSON.parse(raw);
+    if(!d||typeof d!=='object')return false;
+    if(d.v!==SAVE_VERSION)return false;
+    var keys=['coins','xp','level','day','sound','music','volume','trackIdx','theme','country','deliveredCount','upgrades','orders','pack','ready','reviews','view'];
+    for(var i=0;i<keys.length;i++){if(d[keys[i]]!==undefined)S[keys[i]]=d[keys[i]];}
+    if(typeof d.orderSeq==='number')orderSeq=d.orderSeq;
+    if(!Array.isArray(S.orders))S.orders=[];
+    if(!Array.isArray(S.ready))S.ready=[];
+    if(!Array.isArray(S.reviews))S.reviews=[];
+    if(!S.upgrades||typeof S.upgrades!=='object')S.upgrades={};
+    S.music=false;
+    return true;
+  }catch(e){return false;}
+}
+function resetSave(){
+  if(!confirm('Xoá toàn bộ dữ liệu và bắt đầu lại?'))return;
+  try{localStorage.removeItem(SAVE_KEY);}catch(e){}
+  location.reload();
+}
+window.addEventListener('beforeunload',saveGame);
+setInterval(saveGame,5000);
+
+function getCtx(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return audioCtx;}
+function beep(f,d,t,v){if(!S.sound)return;d=d||.08;t=t||'sine';v=(v||.05)*(S.volume/100)*1.2;try{var c=getCtx();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d);}catch(e){}}
+function chord(fs){for(var i=0;i<fs.length;i++){(function(f,idx){setTimeout(function(){beep(f,.12,'sine',.06);},idx*70);})(fs[i],i);}}
+function spraySound(){if(!S.sound)return;try{var c=getCtx();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.frequency.setValueAtTime(2000,c.currentTime);o.frequency.exponentialRampToValueAtTime(600,c.currentTime+.25);g.gain.setValueAtTime(.04*(S.volume/100),c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.3);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.3);}catch(e){}}
+function noteFreq(s){return 261.63*Math.pow(2,s/12);}
+function playMusicTick(){
+  if(!S.music)return;
+  try{
+    var c=getCtx();if(!c)return;
+    var t=TRACKS[S.trackIdx]||TRACKS[0];
+    var now=c.currentTime;
+    var step=musicStep%16;
+    var vol=(S.volume/100)*.045;
+    var o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.value=noteFreq(t.mel[step]);
+    g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(vol,now+.06);g.gain.exponentialRampToValueAtTime(.0008,now+1.4);
+    o.connect(g);g.connect(c.destination);o.start(now);o.stop(now+1.5);
+    if(step%2===0){
+      var bIdx=Math.floor(step/2)%t.bass.length;
+      var o3=c.createOscillator(),g3=c.createGain();
+      o3.type='sine';o3.frequency.value=noteFreq(t.bass[bIdx]-24);
+      g3.gain.setValueAtTime(0,now);g3.gain.linearRampToValueAtTime(vol*1.3,now+.08);g3.gain.exponentialRampToValueAtTime(.0008,now+1.2);
+      o3.connect(g3);g3.connect(c.destination);o3.start(now);o3.stop(now+1.3);
+    }
+    musicStep++;
+  }catch(e){}
+  var t2=TRACKS[S.trackIdx]||TRACKS[0];
+  musicTimer=setTimeout(playMusicTick,t2.tempo);
+}
+function startMusic(){if(musicTimer)return;S.music=true;playMusicTick();}
+function stopMusic(){S.music=false;clearTimeout(musicTimer);musicTimer=null;}
+
+function toast(msg,type){
+  type=type||'info';
+  var wrap=document.getElementById('toasts');
+  if(!wrap)return;
+  var t=document.createElement('div');
+  t.className='toast '+type;t.textContent=msg;
+  wrap.appendChild(t);
+  setTimeout(function(){t.style.opacity='0';t.style.transform='translateX(60px)';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},320);},2400);
+}
+function burst(x,y,emojis,count){
+  emojis=emojis||['✨','⭐','💖'];count=count||7;
+  for(var i=0;i<count;i++){
+    var p=document.createElement('div');
+    p.textContent=pk(emojis);
+    p.style.cssText='position:fixed;font-size:18px;pointer-events:none;z-index:300;left:'+x+'px;top:'+y+'px';
+    p.style.setProperty('--dx',(Math.random()*140-70)+'px');
+    p.style.setProperty('--dy',(-50-Math.random()*90)+'px');
+    document.body.appendChild(p);
+    setTimeout(function(el){return function(){if(el.parentNode)el.parentNode.removeChild(el);};}(p),900);
+  }
+}
+function shake(el){if(!el)return;el.style.animation='none';void el.offsetWidth;el.style.animation='shake .4s';setTimeout(function(){if(el)el.style.animation='';},450);}
+function scentCloud(x,y,emoji){var el=document.createElement('div');el.textContent=emoji;el.style.cssText='position:fixed;pointer-events:none;font-size:26px;z-index:290;left:'+x+'px;top:'+y+'px;transition:all 1.4s';document.body.appendChild(el);setTimeout(function(){el.style.opacity='0';el.style.transform='translate(-50%,-120px) scale(1.6)';},20);setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},1450);}
+
+function xpNeeded(){return 80+S.level*45;}
+function updateHUD(){
+  var sc=document.getElementById('statCoins');if(sc)sc.textContent=S.coins;
+  var sl=document.getElementById('statLevel');if(sl)sl.textContent=S.level;
+  var sd=document.getElementById('statDelivered');if(sd)sd.textContent=S.deliveredCount;
+  var sday=document.getElementById('statDay');if(sday)sday.textContent=S.day;
+  var need=xpNeeded();
+  var xf=document.getElementById('xpFill');if(xf)xf.style.width=cl(S.xp/need*100,0,100)+'%';
+  var xt=document.getElementById('xpText');if(xt)xt.textContent=S.xp+' / '+need+' XP';
+  var shc=document.getElementById('shopCoins');if(shc)shc.textContent=S.coins;
+  var n1=S.orders.length,n2=S.ready.length;
+  var n3=0;
+  for(var i=0;i<S.reviews.length;i++){if(!S.reviews[i].replied)n3++;}
+  var b1=document.getElementById('badgeOrders');
+  if(b1){b1.textContent=n1;b1.setAttribute('data-zero',n1?'0':'1');}
+  var b2=document.getElementById('badgeReady');
+  if(b2){b2.textContent=n2;b2.setAttribute('data-zero',n2?'0':'1');}
+  var b3=document.getElementById('badgeReviews');
+  if(b3){b3.textContent=n3;b3.setAttribute('data-zero',n3?'0':'1');}
+}
+function addXp(n){
+  S.xp+=n;
+  var need=xpNeeded();
+  while(S.xp>=need){S.xp-=need;S.level++;need=xpNeeded();chord([880,1100,1320,1600]);toast('🎉 Lên cấp '+S.level+'!','ok');}
+  updateHUD();
+}
+
+function makeOrder(){
+  if(!S.upgrades)S.upgrades={};
+  var maxExtra=S.upgrades.bigbox?2:0;
+  var maxItems=3+Math.min(3,Math.floor(S.level/2))+maxExtra;
+  var n=ri(2,Math.min(maxItems,7));
+  var poolSize=Math.min(ITEMS.length,20+S.level*5+(S.upgrades.ad?10:0));
+  var pool=ITEMS.slice(0,poolSize);
+  var chosen=sh(pool).slice(0,n);
+  var c=pk(CUSTOMERS);
+  var house=pk(HOUSES);
+  var reward=Math.round(50+n*18+S.level*7+ri(0,30));
+  var desiredPerfume=null;
+  if(S.upgrades.perfumeUp&&Math.random()<.65){
+    var real=PERFUMES.filter(function(p){return p.id;});
+    desiredPerfume=pk(real).id;
+  }
+  var ids=[];
+  for(var i=0;i<chosen.length;i++)ids.push(chosen[i].id);
+  return {id:'OD'+(++orderSeq),customer:c,items:ids,itemObjs:chosen,reward:reward,house:house,desiredPerfume:desiredPerfume};
+}
+function ensureOrders(){
+  if(!Array.isArray(S.orders))S.orders=[];
+  var guard=0;
+  while(S.orders.length<4&&guard<20){
+    var o=makeOrder();
+    if(!o)break;
+    S.orders.push(o);
+    guard++;
+  }
+}
+
+function renderOrders(){
+  ensureOrders();
+  var el=document.getElementById('orderList');
+  if(!el)return;
+  el.innerHTML='';
+  if(!S.orders.length){
+    el.innerHTML='<p class="muted">Không có đơn nào. Bấm "Làm mới" để tạo!</p>';
+    updateHUD();return;
+  }
+  for(var i=0;i<S.orders.length;i++){
+    var o=S.orders[i];
+    var card=document.createElement('div');
+    card.className='order-card'+(o.items.length>=4?' big-order':'');
+    var packing=S.pack&&S.pack.order&&S.pack.order.id===o.id;
+    var pf=o.desiredPerfume?PERFUMES.filter(function(p){return p.id===o.desiredPerfume;})[0]:null;
+    var itemsHtml='';
+    for(var j=0;j<o.itemObjs.length;j++){itemsHtml+='<span class="chip"><span class="e">'+o.itemObjs[j].emoji+'</span>'+o.itemObjs[j].name+'</span>';}
+    var pfHtml=pf?'<div class="perfume-ask">'+pf.emoji+' Khách muốn mùi: <b>'+pf.name+'</b></div>':'';
+    card.innerHTML='<div class="oc-head"><div class="ava">'+o.customer.emoji+'</div><div><b>'+o.customer.name+'<span class="tag-person">'+o.customer.personality+'</span></b><small>'+o.house.name+'</small></div></div><div class="oc-items">'+itemsHtml+'</div>'+pfHtml+'<div class="oc-foot"><div><div class="reward">+'+o.reward+' 🪙</div><div class="dist">'+o.items.length+' món · '+Math.round(30+o.items.length*9)+'m</div></div></div>';
+    var btn=document.createElement('button');
+    btn.className='btn '+(packing?'ghost':'primary');
+    btn.style.marginTop='10px';btn.style.width='100%';
+    btn.textContent=packing?'⏳ Đang đóng gói...':'🎁 Đóng gói ngay';
+    btn.disabled=packing;
+    btn.onclick=(function(ord){return function(e){e.stopPropagation();startPacking(ord);};})(o);
+    card.appendChild(btn);
+    el.appendChild(card);
+  }
+  updateHUD();
+}
+
+document.getElementById('refreshOrders').onclick=function(){
+  if(S.coins<15){toast('Không đủ xu 😢','warn');return;}
+  S.coins-=15;S.orders=[];ensureOrders();renderOrders();
+  beep(700,.08);toast('🔄 Đã làm mới!','ok');saveGame();
+};
+
+function lighten(hex,amt){
+  var c=hex.replace('#','');var n=parseInt(c,16);
+  var r=cl((n>>16)+amt,0,255),g=cl(((n>>8)&255)+amt,0,255),b=cl((n&255)+amt,0,255);
+  var h=((r<<16)|(g<<8)|b).toString(16);
+  while(h.length<6)h='0'+h;
+  return '#'+h;
+}
+function startPacking(order){
+  if(!order)return;
+  if(S.pack){toast('Đang đóng gói đơn khác!','warn');switchView('pack');return;}
+  var sz=order.items.length>=5?'L':(order.items.length>=3?'M':'S');
+  S.pack={order:order,placed:[],wrong:0,boxSize:sz,stamp:false,decor:{color:BOX_COLORS[0],wrap:null,stickers:[],ribbon:null,perfume:null,note:''},tapeScore:0,shelf:buildShelf(order)};
+  S.orders=S.orders.filter(function(o){return o.id!==order.id;});
+  ensureOrders();
+  var bx=document.getElementById('box');if(bx)bx.classList.remove('sealed');
+  applyBoxAppearance();
+  var st=document.getElementById('boxStamp');if(st)st.classList.remove('on');
+  var rb=document.getElementById('boxRibbon');if(rb)rb.classList.remove('on');
+  var ni=document.getElementById('noteInput');if(ni)ni.value='';
+  renderPack();renderOrders();switchView('pack');
+  beep(760,.09);toast('Bắt đầu đóng gói cho '+order.customer.name+'!','ok');
+  saveGame();
+}
+function buildShelf(order){
+  var need=[];
+  for(var i=0;i<order.items.length;i++){
+    var it=ITEMS.filter(function(x){return x.id===order.items[i];})[0];
+    if(it)need.push(it);
+  }
+  var others=sh(ITEMS.filter(function(x){return order.items.indexOf(x.id)===-1;}));
+  var slots=Math.min(16,need.length+8);
+  var decoys=others.slice(0,Math.max(0,slots-need.length));
+  return sh(need.concat(decoys));
+}
+function renderPack(){
+  var info=document.getElementById('packOrderInfo');
+  var taskNote=document.getElementById('taskNote');
+  if(!S.pack){
+    if(info)info.innerHTML='📭 Chưa chọn đơn hàng';
+    if(taskNote)taskNote.style.display='none';
+    var sh1=document.getElementById('shelf');if(sh1)sh1.innerHTML='<p class="muted">Chưa có đơn</p>';
+    var bi1=document.getElementById('boxItems');if(bi1)bi1.innerHTML='';
+    var bs1=document.getElementById('boxStickers');if(bs1)bs1.innerHTML='';
+    var bn1=document.getElementById('boxNote');if(bn1)bn1.classList.remove('show');
+    var sc1=document.getElementById('boxScent');if(sc1)sc1.classList.remove('show');
+    var bst1=document.getElementById('boxStamp');if(bst1)bst1.classList.remove('on');
+    var pf1=document.getElementById('packFill');if(pf1)pf1.style.width='0%';
+    var pt1=document.getElementById('packText');if(pt1)pt1.textContent='0/0';
+    var sb1=document.getElementById('sealBtn');if(sb1)sb1.disabled=true;
+    return;
+  }
+  var o=S.pack.order;
+  if(info)info.innerHTML='<span style="font-size:19px">'+o.customer.emoji+'</span> '+o.customer.name+' <span class="tag-person">'+o.customer.personality+'</span>';
+  var pf=o.desiredPerfume?PERFUMES.filter(function(p){return p.id===o.desiredPerfume;})[0]:null;
+  if(taskNote){
+    taskNote.style.display='block';
+    var itemsLi='';
+    for(var i=0;i<o.itemObjs.length;i++){itemsLi+='<li>'+o.itemObjs[i].emoji+' '+o.itemObjs[i].name+'</li>';}
+    taskNote.innerHTML='<h4>📋 Cần gói cho '+o.customer.name+'</h4><ul>'+itemsLi+'</ul>'+(pf?'<div class="pf-line">💐 Khách muốn mùi: <b>'+pf.emoji+' '+pf.name+'</b> — sai bị dị ứng!</div>':'');
+  }
+  applyBoxAppearance();applyBoxSize();
+  renderShelf();renderBox();renderDecorPanel();updatePackProgress();
+  var st2=document.getElementById('boxStamp');if(st2)st2.classList.toggle('on',!!S.pack.stamp);
+}
+function applyBoxSize(){
+  if(!S.pack)return;
+  var sz=S.pack.boxSize||'M';
+  var box=document.getElementById('box');
+  if(box){
+    var sealed=box.classList.contains('sealed');
+    box.className='box size'+sz+(sealed?' sealed':'');
+  }
+  var btProgressns=document.querySelectorAll('.size-btn');
+  for();
+(var i=0;i<btns.length;i}
+++){btns[i].classfunctionList.toggle('active',btns[i render].getAttribute('data-size')===sz);}
+}
+function renderShelf(){
+  var el=document.getElementById('shelf');if(!el)return;
+  el.innerHTML='';
+  if(!S.pack)return;
+  for(var i=0;i<S.pack.shelf.length;i++){
+    var it=S.pack.shelf[i];
+    var placed=false;
+    for(var j=0;j<S.pack.placed.length;j++){if(S.pack.placed[j].id===it.id&&!S.pack.placed[j].extra){placed=true;break;}}
+    var b=document.createElement('button');
+    b.className='shelf-item'+(placed?' done':'');
+    b.innerHTML='<span class="emoji">'+it.emoji+'</span><span class="nm">'+it.name+'</span>';
+    b.onclick=(function(item){return function(e){addItem(item,e);};})(it);
+    el.appendChild(b);
+  }
+}
+function addItem(it,evt){
+  if(!S.pack)return;
+  var o=S.pack.order;
+  var already=false;
+  for(var i=0;i<S.pack.placed.length;i++){if(S.pack.placed[i].id===it.id&&!S.pack.placed[i].extra){already=true;break;}}
+  if(already){toast('Món này đã bỏ vào rồi!','warn');return;}
+  if(o.items.indexOf(it.id)===-1){
+    if(!S.upgrades.gloves)S.pack.wrong++;
+    else if(Math.random()<.5)S.pack.wrong++;
+    shake(document.getElementById('box'));beep(170,.18,'sawtooth',.07);
+    toast('Ơ! Đơn này không có món đó 😅','err');
+    if(evt)burst(evt.clientX,evt.clientY,['❌','💦'],5);
+    return;
+  }
+  S.pack.placed.push({id:it.id,x:10+Math.random()*60,y:28+Math.random()*45,rot:Math.random()*40-20});
+  beep(920+S.pack.placed.length*70,.07);
+  if(evt)burst(evt.clientX,evt.clientY,['✨','⭐','💖'],6);
+  renderBox();renderShelf();updatePackBox(){
+  var bi=document.getElementById('boxItems');if(!bi)return;
+  bi.innerHTML='';
+  if(!S.pack)return;
+  for(var i=0;i<S.pack.placed.length;i++){
+    var p=S.pack.placed[i];
+    var it=ITEMS.filter(function(x){return x.id===p.id;})[0];
+    if(!it)continue;
+    var d=document.createElement('div');
+    d.className='box-item';d.setAttribute('data-idx',i);d.textContent=it.emoji;
+    d.style.left=p.x+'%';d.style.top=p.y+'%';
+    d.style.transform='translate(-50%,-50%) rotate('+p.rot+'deg)';
+    bi.appendChild(d);
+  }
+  setupDrag();
+  var bs=document.getElementById('boxStickers');
+  if(bs){
+    bs.innerHTML='';
+    for(var s=0;s<S.pack.decor.stickers.length;s++){
+      var st=S.pack.decor.stickers[s];
+      var sd=document.createElement('div');
+      sd.className='box-sticker';sd.textContent=st.emoji;
+      sd.style.left=st.x+'%';sd.style.top=st.y+'%';
+      sd.style.transform='rotate('+st.rot+'deg)';
+      bs.appendChild(sd);
+    }
+  }
+  var rb=document.getElementById('boxRibbon');
+  if(rb){
+    var rData=RIBBONS.filter(function(r){return r.id===S.pack.decor.ribbon;})[0];
+    if(rData&&rData.id){rb.style.setProperty('--rb',rData.color);rb.classList.add('on');}
+    else rb.classList.remove('on');
+  }
+  var noteEl=document.getElementById('boxNote');
+  if(noteEl){
+    if(S.pack.decor.note&&S.pack.decor.note.trim()){noteEl.textContent=S.pack.decor.note.slice(0,80);noteEl.classList.add('show');}
+    else noteEl.classList.remove('show');
+  }
+  var scentEl=document.getElementById('boxScent');
+  if(scentEl){
+    var pData=PERFUMES.filter(function(p){return p.id===S.pack.decor.perfume;})[0];
+    if(pData&&pData.id){scentEl.textContent=pData.cloud+'✨';scentEl.classList.add('show');}
+    else scentEl.classList.remove('show');
+  }
+  var st2=document.getElementById('boxStamp');if(st2)st2.classList.toggle('on',!!S.pack.stamp);
+}
+function setupDrag(){
+  var box=document.getElementById('box');
+  var bi=document.getElementById('boxItems');
+  if(!box||!bi)return;
+  var items=bi.querySelectorAll('.box-item');
+  for(var k=0;k<items.length;k++){
+    (function(el){
+      el.onpointerdown=function(e){
+        e.preventDefault();e.stopPropagation();
+        var idx=parseInt(el.getAttribute('data-idx'));
+        try{el.setPointerCapture(e.pointerId);}catch(_){}
+        var boxRect=box.getBoundingClientRect();
+        var move=function(ev){
+          var px=((ev.clientX-boxRect.left)/boxRect.width)*100;
+          var py=((ev.clientY-boxRect.top)/boxRect.height)*100;
+          var cx=cl(px,5,95),cy=cl(py,15,88);
+          el.style.left=cx+'%';el.style.top=cy+'%';
+          if(S.pack&&S.pack.placed[idx]){S.pack.placed[idx].x=cx;S.pack.placed[idx].y=cy;}
+        };
+        var up=function(){
+          el.removeEventListener('pointermove',move);
+          el.removeEventListener('pointerup',up);
+          el.removeEventListener('pointercancel',up);
+          try{el.releasePointerCapture(e.pointerId);}catch(_){}
+        };
+        el.addEventListener('pointermove',move);
+        el.addEventListener('pointerup',up);
+        el.addEventListener('pointercancel',up);
+      };
+    })(items[k]);
+  }
+}
+function applyBoxAppearance(){
+  if(!S.pack)return;
+  var c=S.pack.decor.color;
+  var box=document.getElementById('box');
+  if(box)box.style.background='linear-gradient(180deg,'+lighten(c,16)+','+c+')';
+  var w=WRAPS.filter(function(x){return x.id===S.pack.decor.wrap;})[0];
+  var wrapEl=document.getElementById('boxWrap');
+  if(wrapEl){
+    if(w&&w.css){wrapEl.style.background=w.css;wrapEl.style.opacity='.55';}
+    else{wrapEl.style.background='';wrapEl.style.opacity='0';}
+  }
+}
+function renderDecorPanel(){
+  var sw=document.getElementById('swatches');
+  if(sw){
+    sw.innerHTML='';
+    for(var ci=0;ci<BOX_COLORS.length;ci++){
+      (function(c){
+        var b=document.createElement('button');
+        b.className='swatch'+(S.pack&&S.pack.decor.color===c?' active':'');
+        b.style.background=c;
+        b.onclick=function(){if(!S.pack)return;S.pack.decor.color=c;applyBoxAppearance();renderDecorPanel();beep(640,.06);};
+        sw.appendChild(b);
+      })(BOX_COLORS[ci]);
+    }
+  }
+  var wp=document.getElementById('wraps');
+  if(wp){
+    wp.innerHTML='';
+    var wrapList=S.upgrades.premiumPaper?WRAPS:WRAPS.slice(0,4);
+    for(var wi=0;wi<wrapList.length;wi++){
+      (function(w){
+        var b=document.createElement('button');
+        b.className='wrap-btn'+(S.pack&&S.pack.decor.wrap===w.id?' active':'');
+        b.style.background=w.css||'#fdf7ff';
+        if(w.id)b.style.backgroundColor='#fff';
+        b.innerHTML='<span class="lbl">'+w.name+'</span>';
+        b.onclick=function(){if(!S.pack)return;S.pack.decor.wrap=w.id;applyBoxAppearance();renderDecorPanel();beep(560,.06);};
+        wp.appendChild(b);
+      })(wrapList[wi]);
+    }
+  }
+  var rw=document.getElementById('ribbons');
+  if(rw){
+    rw.innerHTML='';
+    for(var ri2=0;ri2<RIBBONS.length;ri2++){
+      (function(r){
+        var b=document.createElement('button');
+        b.className='ribbon-btn'+(r.id?'':' none')+(S.pack&&S.pack.decor.ribbon===r.id?' active':'');
+        b.textContent=r.emoji;b.title=r.label;
+        if(r.id)b.style.background=r.color;
+        b.onclick=function(){if(!S.pack)return;S.pack.decor.ribbon=r.id;renderBox();renderDecorPanel();beep(720,.07);};
+        rw.appendChild(b);
+      })(RIBBONS[ri2]);
+    }
+  }
+  var sk=document.getElementById('stickers');
+  if(sk){
+    sk.innerHTML='';
+    var list=S.upgrades.stickerpack?STICKERS_BASE.concat(STICKERS_VIP):STICKERS_BASE;
+    for(var si=0;si<list.length;si++){
+      (function(e){
+        var b=document.createElement('button');
+        b.className='sticker-btn';b.textContent=e;
+        b.onclick=function(ev){
+          if(!S.pack)return;
+          if(S.pack.decor.stickers.length>=14){toast('Hộp đầy sticker rồi!','warn');return;}
+          S.pack.decor.stickers.push({emoji:e,x:6+Math.random()*78,y:22+Math.random()*66,rot:Math.random()*60-30});
+          renderBox();beep(880+Math.random()*300,.05);
+          if(ev)burst(ev.clientX,ev.clientY,[e],3);
+        };
+        sk.appendChild(b);
+      })(list[si]);
+    }
+  }
+  var pfEl=document.getElementById('perfumes');
+  if(pfEl){
+    pfEl.innerHTML='';
+    var hint=document.getElementById('perfumeHint');
+    var wantedId=S.pack&&S.pack.order&&S.pack.order.desiredPerfume;
+    if(wantedId){
+      var wpp=PERFUMES.filter(function(p){return p.id===wantedId;})[0];
+      if(hint&&wpp)hint.textContent='— khách muốn '+wpp.emoji+' '+wpp.name;
+    }else if(hint)hint.textContent='';
+    var perfList=S.upgrades.perfumeUp?PERFUMES:PERFUMES.slice(0,4);
+    for(var pi=0;pi<perfList.length;pi++){
+      (function(p){
+        var b=document.createElement('button');
+        var isReq=wantedId&&p.id===wantedId;
+        b.className='perfume-btn'+(S.pack&&S.pack.decor.perfume===p.id?' active':'')+(isReq?' req':'');
+        b.textContent=p.emoji;b.title=p.name+(isReq?' (khách yêu cầu)':'');
+        b.onclick=function(){
+          if(!S.pack)return;
+          S.pack.decor.perfume=p.id;
+          renderBox();renderDecorPanel();spraySound();
+          if(p.id){
+            var boxRect=document.getElementById('box').getBoundingClientRect();
+            for(var i=0;i<5;i++)setTimeout((function(ii,pp){return function(){scentCloud(boxRect.left+boxRect.width/2+(Math.random()*60-30),boxRect.top+30,pp.cloud);};})(i,p),i*90);
+            toast('💐 Đã xịt mùi '+p.name+'!','ok');
+          }
+        };
+        pfEl.appendChild(b);
+      })(perfList[pi]);
+    }
+  }
+  var nt=document.getElementById('noteTemplates');
+  if(nt){
+    nt.innerHTML='';
+    for(var ti=0;ti<NOTE_TEMPLATES.length;ti++){
+      (function(t){
+        var b=document.createElement('button');
+        b.className='tmpl-btn';
+        b.textContent=t.slice(0,22)+(t.length>22?'...':'');
+        b.title=t;
+        b.onclick=function(){if(!S.pack)return;S.pack.decor.note=t;document.getElementById('noteInput').value=t;renderBox();beep(760,.05);};
+        nt.appendChild(b);
+      })(NOTE_TEMPLATES[ti]);
+    }
+  }
+  var ni=document.getElementById('noteInput');
+  if(ni&&S.pack){
+    if(ni.value!==S.pack.decor.note)ni.value=S.pack.decor.note||'';
+  }
+}
+document.getElementById('noteInput').addEventListener('input',function(e){if(!S.pack)return;S.pack.decor.note=e.target.value;renderBox();});
+document.getElementById('clearDecor').onclick=function(){
+  if(!S.pack)return;
+  S.pack.decor={color:BOX_COLORS[0],wrap:null,stickers:[],ribbon:null,perfume:null,note:''};
+  S.pack.stamp=false;
+  document.getElementById('noteInput').value='';applyBoxAppearance();renderBox();renderDecorPanel();
+  document.getElementById('boxStamp').classList.remove('on');
+  toast('🧹 Đã xoá trang trí','info');
+};
+function updatePackProgress(){
+  if(!S.pack){
+    var pf=document.getElementById('packFill');if(pf)pf.style.width='0%';
+    var pt=document.getElementById('packText');if(pt)pt.textContent='0/0';
+    var sb=document.getElementById('sealBtn');if(sb)sb.disabled=true;
+    return;
+  }
+  var total=S.pack.order.items.length;
+  var done=0;
+  for(var i=0;i<S.pack.placed.length;i++){if(!S.pack.placed[i].extra)done++;}
+  var pf2=document.getElementById('packFill');if(pf2)pf2.style.width=(done/total*100)+'%';
+  var pt2=document.getElementById('packText');if(pt2)pt2.textContent=done+'/'+total;
+  var sb2=document.getElementById('sealBtn');if(sb2)sb2.disabled=S.pack.placed.length===0;
+}
+document.getElementById('resetPack').onclick=function(){
+  if(!S.pack)return;
+  S.pack.placed=[];S.pack.wrong=0;S.pack.decor.stickers=[];S.pack.decor.ribbon=null;S.pack.stamp=false;
+  document.getElementById('box').classList.remove('sealed');
+  document.getElementById('boxStamp').classList.remove('on');
+  renderBox();renderShelf();renderDecorPanel();updatePackProgress();
+  toast('↺ Đã làm lại','info');beep(400,.08);
+};
+var sizeBtns=document.querySelectorAll('.size-btn');
+for(var sbi=0;sbi<sizeBtns.length;sbi++){
+  (function(b){
+    b.onclick=function(){
+      if(!S.pack){toast('Chọn đơn trước!','warn');return;}
+      S.pack.boxSize=b.getAttribute('data-size');
+      applyBoxSize();beep(680,.06);saveGame();
+    };
+  })(sizeBtns[sbi]);
+}
+document.getElementById('stampBtn').onclick=function(){
+  if(!S.pack){toast('Chọn đơn trước!','warn');return;}
+  S.pack.stamp=!S.pack.stamp;
+  document.getElementById('boxStamp').classList.toggle('on',S.pack.stamp);
+  beep(S.pack.stamp?820:400,.08);
+  toast(S.pack.stamp?'💮 Đã đóng dấu!':'Đã bỏ dấu','info');
+  if(S.pack.stamp){var r=document.getElementById('box').getBoundingClientRect();burst(r.left+r.width*.2,r.top+r.height*.8,['💮','✨'],5);}
+  saveGame();
+};
+function openFreeAdd(){
+  if(!S.pack){toast('Chọn đơn trước!','warn');return;}
+  document.getElementById('freeSearch').value='';renderFreeGrid();document.getElementById('freeAddModal').classList.add('show');beep(780,.07);
+}
+function renderFreeGrid(){
+  var el=document.getElementById('freeGrid');if(!el)return;
+  var q=(document.getElementById('freeSearch').value||'').toLowerCase().trim();
+  el.innerHTML='';
+  var list=ITEMS.filter(function(i){return !q||i.name.toLowerCase().indexOf(q)>-1||i.id.toLowerCase().indexOf(q)>-1;});
+  if(!list.length)el.innerHTML='<p style="grid-column:1/-1;color:#9b8181;font-weight:700;padding:14px;text-align:center">Không tìm thấy 😅</p>';
+  for(var i=0;i<list.length;i++){
+    (function(it){
+      var b=document.createElement('button');
+      b.className='free-item';b.textContent=it.emoji;b.title=it.name;
+      b.onclick=function(ev){
+        if(!S.pack)return;
+        S.pack.placed.push({id:it.id,x:10+Math.random()*60,y:28+Math.random()*45,rot:Math.random()*40-20,extra:true});
+        renderBox();beep(880+Math.random()*200,.05);
+        if(ev)burst(ev.clientX,ev.clientY,[it.emoji,'✨'],4);
+        updateFreeCount();
+      };
+      el.appendChild(b);
+    })(list[i]);
+  }
+  updateFreeCount();
+}
+function updateFreeCount(){
+  if(!S.pack)return;
+  var n=0;
+  for(var i=0;i<S.pack.placed.length;i++){if(S.pack.placed[i].extra)n++;}
+  var el=document.getElementById('freeCount');
+  if(el)el.textContent='Đang có '+n+' món tự do'+(n>2?' (⚠️ nhiều quá!)':'');
+}
+document.getElementById('freeSearch').addEventListener('input',renderFreeGrid);
+document.getElementById('freeAddBtn').onclick=openFreeAdd;
+document.getElementById('freeClose').onclick=function(){document.getElementById('freeAddModal').classList.remove('show');saveGame();beep(700,.07);};
+document.getElementById('freeClear').onclick=function(){
+  if(!S.pack)return;
+  var before=S.pack.placed.length;
+  S.pack.placed=S.pack.placed.filter(function(p){return !p.extra;});
+  var removed=before-S.pack.placed.length;
+  renderBox();updateFreeCount();
+  toast(removed>0?'🧹 Đã xoá '+removed+' món':'Không có món tự do',removed>0?'info':'warn');
+};
+function openTape(){
+  if(!S.pack)return;
+  if(S.upgrades.robot){S.pack.tapeScore=3;toast('🤖 Robot dán keo!','ok');chord([900,1200,1500]);sealPackage();return;}
+  tapeState={round:0,good:0,marker:0,dir:1,speed:.8,zoneStart:.3,zoneW:.26,running:true};
+  tapeLastTs=0;document.getElementById('tapeGood').textContent='0';
+  nextTapeRound();document.getElementById('tapeModal').classList.add('show');
+  requestAnimationFrame(tapeLoop);
+}
+function nextTapeRound(){
+  tapeState.round++;
+  tapeState.zoneStart=.08+Math.random()*.64;
+  tapeState.marker=0;tapeState.dir=1;
+  tapeState.speed=.72+tapeState.round*.16;
+  document.getElementById('tapeRound').textContent=tapeState.round;
+  document.getElementById('tapeZone').style.left=(tapeState.zoneStart*100)+'%';
+  document.getElementById('tapeZone').style.width=(tapeState.zoneW*100)+'%';
+}
+function tapeLoop(ts){
+  if(!tapeState||!tapeState.running)return;
+  if(!tapeLastTs)tapeLastTs=ts;
+  var dt=Math.min((ts-tapeLastTs)/1000,.05);
+  tapeLastTs=ts;
+  tapeState.marker+=tapeState.dir*tapeState.speed*dt;
+  if(tapeState.marker>1){tapeState.marker=1;tapeState.dir=-1;}
+  if(tapeState.marker<0){tapeState.marker=0;tapeState.dir=1;}
+  document.getElementById('tapeMarker').style.left=(tapeState.marker*100)+'%';
+  requestAnimationFrame(tapeLoop);
+}
+function tapeStop(){
+  if(!tapeState||!tapeState.running)return;
+  var ok=tapeState.marker>=tapeState.zoneStart&&tapeState.marker<=tapeState.zoneStart+tapeState.zoneW;
+  if(ok){tapeState.good++;document.getElementById('tapeGood').textContent=tapeState.good;beep(1100,.09);}
+  else{beep(200,.15,'square',.06);shake(document.querySelector('.tape-track'));}
+  if(tapeState.round<3)nextTapeRound();
+  else{
+    tapeState.running=false;
+    document.getElementById('tapeModal').classList.remove('show');
+    S.pack.tapeScore=tapeState.good;
+    setTimeout(function(){toast('Băng keo: '+tapeState.good+'/3',tapeState.good>=2?'ok':'warn');sealPackage();},260);
+  }
+}
+document.getElementById('tapeBtn').onclick=tapeStop;
+document.addEventListener('keydown',function(e){
+  if(e.code==='Space'&&document.getElementById('tapeModal').classList.contains('show')){e.preventDefault();tapeStop();}
+});
+document.getElementById('sealBtn').onclick=function(){
+  if(!S.pack)return;
+  var done=0;
+  for(var i=0;i<S.pack.placed.length;i++){if(!S.pack.placed[i].extra)done++;}
+  var total=S.pack.order.items.length;
+  if(done<total){if(!confirm('⚠️ Còn thiếu '+(total-done)+' món!\nKhách sẽ trừ tiền, vẫn niêm phong?'))return;}
+  openTape();
+};
+function sealPackage(){
+  if(!S.pack)return;
+  var p=S.pack,o=p.order;
+  var needIds=o.items;
+  var placedIds=[];
+  for(var i=0;i<p.placed.length;i++)placedIds.push(p.placed[i].id);
+  var missing=0;
+  for(var m=0;m<needIds.length;m++){if(placedIds.indexOf(needIds[m])===-1)missing++;}
+  var extras=0;
+  for(var e=0;e<p.placed.length;e++){if(needIds.indexOf(p.placed[e].id)===-1)extras++;}
+  var wrong=p.wrong;
+  var overload=Math.max(0,extras-2);
+  var stars=5;
+  stars-=wrong*.8;stars-=missing*1.2;stars-=overload*.7;stars-=(3-p.tapeScore)*.5;
+  var bonus=0;
+  if(p.decor.stickers.length>=2)bonus+=.3;
+  if(p.decor.ribbon)bonus+=.3;
+  if(p.decor.perfume)bonus+=.3;
+  if(p.decor.note.trim())bonus+=.4;
+  if(p.decor.wrap)bonus+=.2;
+  if(p.stamp)bonus+=.3;
+  var szBonus=(p.boxSize==='L'&&o.items.length>=5)?.3:(p.boxSize==='M'&&o.items.length>=3&&o.items.length<5)?.2:(p.boxSize==='S'&&o.items.length<3)?.2:0;
+  bonus+=szBonus;
+  var allergyPenalty=0,perfumeMatched=false;
+  if(o.desiredPerfume){
+    if(p.decor.perfume===o.desiredPerfume){perfumeMatched=true;bonus+=.5;}
+    else if(p.decor.perfume){allergyPenalty=50+S.level*8;stars=Math.max(1,stars-2.5);}
+    else stars=Math.max(1,stars-1);
+  }
+  stars=cl(stars+bonus,1,5);
+  var rounded=Math.round(stars);
+  var coins=Math.round(o.reward*(.55+stars*.13));
+  if(perfumeMatched)coins=Math.round(coins*1.2);
+  if(S.upgrades.vip)coins=Math.round(coins*1.25);
+  var problemPenalty=wrong*30+missing*50+overload*25;
+  coins=Math.max(0,coins-problemPenalty-allergyPenalty);
+  var pkg={order:o,stars:rounded,coins:coins,decor:JSON.parse(JSON.stringify(p.decor)),
+    wrong:wrong,missing:missing,extras:extras,overload:overload,problemPenalty:problemPenalty,
+    stamp:p.stamp,boxSize:p.boxSize,tape:p.tapeScore,perfumeMatched:perfumeMatched,allergyPenalty:allergyPenalty,id:uid()};
+  S.ready.push(pkg);
+  S.pack=null;
+  document.getElementById('box').classList.add('sealed');
+  chord([800,1000,1250,1500]);
+  if(problemPenalty>0){toast('😱 Đóng gói sai! Trừ '+problemPenalty+'🪙','err');beep(180,.3,'square',.08);}
+  else if(allergyPenalty>0){toast('🤧 Dị ứng nước hoa! Trừ '+allergyPenalty+'🪙','err');}
+  else toast('📦 Đã niêm phong!','ok');
+  saveGame();
+  setTimeout(function(){
+    document.getElementById('box').classList.remove('sealed');
+    renderPack();renderOrders();renderDeliverList();updateHUD();
+    switchView('map');
+  },700);
+}
+function buildMap(){
+  var map=document.getElementById('map');if(!map)return;
+  map.innerHTML='';
+  [22,50,78].forEach(function(x){var r=document.createElement('div');r.className='road v';r.style.left=x+'%';map.appendChild(r);});
+  [45,85].forEach(function(y){var r=document.createElement('div');r.className='road h';r.style.top=y+'%';map.appendChild(r);});
+  var shop=document.createElement('div');
+  shop.className='shop-house';shop.style.left='8%';shop.style.top='85%';
+  shop.innerHTML='<span class="h-emoji">🏪</span><span class="h-name">Shop Cute</span>';
+  map.appendChild(shop);
+  for(var i=0;i<HOUSES.length;i++){
+    (function(h,idx){
+      var d=document.createElement('div');
+      d.className='house';d.setAttribute('data-house',idx);
+      d.style.left=h.x+'%';d.style.top=h.y+'%';
+      d.innerHTML='<span class="h-emoji">'+h.emoji+'</span><span class="h-name">'+h.name+'</span>';
+      map.appendChild(d);
+    })(HOUSES[i],i);
+  }
+  var sh2=document.createElement('div');
+  sh2.id='shipper';
+  sh2.style.left='8%';sh2.style.top='85%';
+  sh2.innerHTML='🛵<span class="bubble" id="shipperBubble" style="display:none">Đang giao!</span>';
+  map.appendChild(sh2);
+}
+function buildPath(house){
+  var pts=[{x:8,y:85},{x:house.x,y:85},{x:house.x,y:house.y}];
+  var segs=[],total=0;
+  for(var i=0;i<pts.length-1;i++){
+    var a=pts[i],b=pts[i+1];
+    var dx=b.x-a.x,dy=b.y-a.y;
+    var len=Math.sqrt(dx*dx+dy*dy);
+    if(len<.01)continue;
+    segs.push({a:a,b:b,len:len,start:total});total+=len;
+  }
+  return {segs:segs,total:total};
+}
+function posAt(path,dist){
+  for(var i=0;i<path.segs.length;i++){
+    var s=path.segs[i];
+    if(dist<=s.start+s.len||i===path.segs.length-1){
+      var t=cl((dist-s.start)/s.len,0,1);
+      return {x:s.a.x+(s.b.x-s.a.x)*t,y:s.a.y+(s.b.y-s.a.y)*t};
+    }
+  }
+  return {x:8,y:85};
+}
+function shipperSpeed(){
+  var sp=13;
+  if(S.upgrades.shoes)sp*=1.35;
+  if(S.upgrades.scooter)sp*=1.8;
+  return sp;
+}
+function startDelivery(index){
+  if(S.delivering){toast('Shipper đang giao!','warn');return;}
+  var pkg=S.ready[index];
+  if(!pkg)return;
+  var houses=document.querySelectorAll('.house');
+  for(var i=0;i<houses.length;i++)houses[i].classList.remove('target');
+  var houseIdx=HOUSES.indexOf(pkg.order.house);
+  if(houseIdx<0){for(var j=0;j<HOUSES.length;j++){if(HOUSES[j].name===pkg.order.house.name){houseIdx=j;break;}}}
+  var hEl=document.querySelector('.house[data-house="'+houseIdx+'"]');
+  if(hEl)hEl.classList.add('target');
+  var sh=document.getElementById('shipper');
+  sh.style.left='8%';sh.style.top='85%';
+  S.delivering={pkg:pkg,index:index,path:buildPath(pkg.order.house),dist:0,last:performance.now(),lastX:8};
+  var bub=document.getElementById('shipperBubble');
+  bub.style.display='block';bub.textContent='Đi giao! 🚀';
+  beep(660,.09);renderDeliverList();
+  animId=requestAnimationFrame(animateDelivery);
+}
+function animateDelivery(){
+  if(!S.delivering)return;
+  var d=S.delivering;
+  var now=performance.now();
+  var dt=Math.min((now-d.last)/1000,.06);
+  d.last=now;
+  d.dist+=shipperSpeed()*dt;
+  if(d.dist>=d.path.total){arrive();return;}
+  var pos=posAt(d.path,d.dist);
+  var sh=document.getElementById('shipper');
+  sh.style.left=pos.x+'%';sh.style.top=pos.y+'%';
+  if(Math.abs(pos.x-d.lastX)>.15){
+    sh.style.transform='translate(-50%,-50%) scaleX('+(pos.x>d.lastX?1:-1)+')';
+    d.lastX=pos.x;
+  }
+  animId=requestAnimationFrame(animateDelivery);
+}
+function arrive(){
+  cancelAnimationFrame(animId);
+  var d=S.delivering;
+  if(!d)return;
+  var pkg=d.pkg;
+  S.delivering=null;
+  var idx=S.ready.indexOf(pkg);
+  if(idx>-1)S.ready.splice(idx,1);
+  S.coins+=pkg.coins;
+  S.deliveredCount++;
+  var xpGain=12+Math.round(pkg.stars*7);
+  addXp(xpGain);
+  if(S.deliveredCount%5===0){S.day++;toast('📅 Ngày '+S.day+'!','info');}
+  chord([1000,1250,1500,1800]);
+  burst(window.innerWidth/2,200,['🎉','💖','⭐','✨','🎊'],16);
+  document.getElementById('shipperBubble').textContent='Giao xong! 🎉';
+  var houses=document.querySelectorAll('.house');
+  for(var i=0;i<houses.length;i++)houses[i].classList.remove('target');
+  var review=makeReview(pkg);
+  S.reviews.unshift(review);
+  setTimeout(function(){
+    var sh=document.getElementById('shipper');
+    sh.style.transform='translate(-50%,-50%) scaleX(-1)';
+    sh.style.left='8%';sh.style.top='85%';
+    setTimeout(function(){document.getElementById('shipperBubble').style.display='none';sh.style.transform='translate(-50%,-50%)';},1250);
+  },900);
+  showRating(pkg,xpGain,review);
+  updateHUD();renderDeliverList();renderOrders();renderReviews();
+  saveGame();
+}
+function makeReview(pkg){
+  var stars=pkg.stars;
+  var texts=REVIEW_TEXTS[cl(stars,1,5)]||REVIEW_TEXTS[3];
+  var text=pk(texts);
+  var probs=[];
+  if(pkg.missing>0)probs.push('thiếu '+pkg.missing+' món');
+  if(pkg.wrong>0)probs.push('bỏ lộn '+pkg.wrong+' món');
+  if(pkg.overload>0)probs.push('nhồi thêm '+pkg.overload+' món');
+  if(pkg.allergyPenalty>0){
+    text='Trời ơi shop xịt nhầm nước hoa làm mình dị ứng nặng luôn! 🤧 Không thể chấp nhận!';
+  }else if(probs.length){
+    text=pk([
+      'Đặt hàng mà '+probs.join(', ')+' là sao vậy shop??? 😡',
+      'Shop đóng gói kỳ quá! '+probs.join(', ')+'. Không hài lòng 😤',
+      'Kiểm tra lại đi shop ơi, '+probs.join(', ')+'! 😠',
+      'Thất vọng ghê, '+probs.join(', ')+'. Không có lần sau 😡',
+      'Sao mà '+probs.join(', ')+' vậy??? 😡'
+    ]);
+  }else if(pkg.extras>=1&&pkg.extras<=2&&stars>=4){
+    text+=' Mà shop tặng thêm đồ dễ thương ghê! 🎁';
+  }else if(pkg.perfumeMatched&&stars>=4){
+    var p=PERFUMES.filter(function(x){return x.id===pkg.order.desiredPerfume;})[0];
+    if(p)text+=' Mùi '+p.name.toLowerCase()+' đúng ý! '+p.emoji;
+  }
+  if(pkg.stamp&&stars>=4)text+=' Có dấu bưu thiếu nhìn chuyên nghiệp 💮';
+  return {id:uid(),customer:pkg.order.customer,stars:stars,text:text,replied:false,reply:null,customerResponse:null,ts:Date.now(),orderId:pkg.order.id};
+}
+function showRating(pkg,xpGain,review){
+  var stars=pkg.stars;
+  var titles={5:['🌟 Hoàn hảo!','Khách mê tít!'],4:['😊 Rất hài lòng!','Gói xinh!'],3:['🙂 Tạm ổn!','Thiếu xinh.'],2:['😕 Hơi thất vọng','Gói chưa đẹp.'],1:['😢 Khách buồn','Cẩn thận hơn nhé!']};
+  var t=titles[cl(stars,1,5)];
+  document.getElementById('rateTitle').textContent=t[0];
+  document.getElementById('rateSub').textContent=t[1];
+  var sr=document.getElementById('rateStars');sr.innerHTML='';
+  for(var i=1;i<=5;i++){
+    var s=document.createElement('span');
+    s.textContent=i<=stars?'⭐':'☆';
+    s.style.opacity=i<=stars?'1':'.35';
+    sr.appendChild(s);
+  }
+  document.getElementById('rateCoins').textContent='+'+pkg.coins+' 🪙';
+  document.getElementById('rateXp').textContent='+'+xpGain+' XP';
+  var pen=document.getElementById('ratePenalty');
+  var penLines=[];
+  if(pkg.problemPenalty>0)penLines.push('📦 Đóng gói sai: -'+pkg.problemPenalty+' 🪙');
+  if(pkg.allergyPenalty>0)penLines.push('🤧 Dị ứng: -'+pkg.allergyPenalty+' 🪙');
+  if(penLines.length){pen.style.display='block';pen.innerHTML=penLines.join('<br>');}
+  else pen.style.display='none';
+  document.getElementById('rateModal').classList.add('show');
+  S.currentReviewId=review.id;
+}
+document.getElementById('rateClose').onclick=function(){document.getElementById('rateModal').classList.remove('show');beep(760,.07);};
+document.getElementById('rateGoReview').onclick=function(){document.getElementById('rateModal').classList.remove('show');switchView('reviews');setTimeout(function(){openReviewModal(S.currentReviewId);},200);};
+function renderDeliverList(){
+  var el=document.getElementById('deliverList');if(!el)return;
+  el.innerHTML='';
+  if(!S.ready.length){
+    el.innerHTML='<p class="muted">📭 Chưa có gói nào.<br>Hãy đóng gói trước!</p>';
+    updateHUD();return;
+  }
+  for(var i=0;i<S.ready.length;i++){
+    (function(pkg,idx){
+      var d=document.createElement('div');
+      d.className='deliver-card';
+      var starStr=repeatStr('⭐',pkg.stars)+repeatStr('☆',5-pkg.stars);
+      d.innerHTML='<div class="dc-head"><div class="ava">'+pkg.order.customer.emoji+'</div><div><b>'+pkg.order.customer.name+'</b><small>'+pkg.order.house.name+'</small></div></div><div class="dc-body"><span>'+starStr+'</span><span class="coin">+'+pkg.coins+' 🪙</span></div>';
+      var btn=document.createElement('button');
+      btn.className='btn primary';
+      btn.textContent=S.delivering?'⏳ Đang bận':'🛵 Giao ngay';
+      btn.disabled=!!S.delivering;
+      if(S.delivering){btn.classList.add('ghost');btn.classList.remove('primary');}
+      btn.onclick=function(){startDelivery(idx);};
+      d.appendChild(btn);
+      el.appendChild(d);
+    })(S.ready[i],i);
+  }
+  updateHUD();
+}
+function renderReviews(){
+  var el=document.getElementById('reviewList');if(!el)return;
+  el.innerHTML='';
+  if(!S.reviews.length){
+    el.innerHTML='<p class="muted">📭 Chưa có đánh giá nào.</p>';
+    updateHUD();return;
+  }
+  for(var i=0;i<S.reviews.length;i++){
+    (function(r){
+      var card=document.createElement('div');
+      card.className='review-card'+(r.replied?'':' unread');
+      var starStr=repeatStr('⭐',r.stars)+repeatStr('☆',5-r.stars);
+      var isAngry=r.customerResponse&&/nổi giận|dị ứng|thất vọng|report|tôn trọng/.test(r.customerResponse);
+      card.innerHTML='<div class="rc-head"><div class="ava">'+r.customer.emoji+'</div><div><b>'+r.customer.name+'</b><small>'+r.customer.personality+' · Đơn '+r.orderId+'</small></div><div class="rc-stars">'+starStr+'</div></div><div class="rc-text">"'+r.text+'"</div>'+(r.reply?'<div class="rc-reply"><b>🏪 Bạn:</b> '+r.reply+'</div>':'')+(r.customerResponse?'<div class="rc-cust-response'+(isAngry?' angry':'')+'">'+r.customer.emoji+' <b>'+r.customer.name+':</b> '+r.customerResponse+'</div>':'');
+      var actions=document.createElement('div');
+      actions.className='rc-actions';
+      if(!r.replied){
+        var b=document.createElement('button');
+        b.className='btn primary';b.style.width='100%';
+        b.textContent='💌 Trả lời khách';
+        b.onclick=function(){openReviewModal(r.id);};
+        actions.appendChild(b);
+      }else{
+        var b2=document.createElement('button');
+        b2.className='btn ghost';b2.style.width='100%';
+        b2.textContent='✅ Đã trả lời';b2.disabled=true;
+        actions.appendChild(b2);
+      }
+      card.appendChild(actions);
+      el.appendChild(card);
+    })(S.reviews[i]);
+  }
+  updateHUD();
+}
+var REPLY_TEMPLATES=['Cảm ơn bạn đã ủng hộ shop 💖','Xin lỗi bạn vì trải nghiệm chưa tốt 🙏','Dạ shop cảm ơn bạn rất nhiều! 🌸','Shop xin lỗi vì sự bất tiện 😢','Cảm ơn bạn nha, shop vui lắm! 🥰','Dạ shop ghi nhận và sẽ khắc phục 🙇'];
+function openReviewModal(id){
+  var r=S.reviews.filter(function(x){return x.id===id;})[0];
+  if(!r)return;
+  S.currentReviewId=id;
+  document.getElementById('revSub').textContent='Trả lời '+r.customer.name+' nhé!';
+  document.getElementById('revAvaBox').innerHTML='<span style="font-size:38px">'+r.customer.emoji+'</span><div style="text-align:left"><b>'+r.customer.name+'</b><br><small style="color:#9b8181;font-weight:600">'+repeatStr('⭐',r.stars)+repeatStr('☆',5-r.stars)+'</small></div>';
+  document.getElementById('revMsg').innerHTML='<b>Đánh giá</b>"'+r.text+'"';
+  document.getElementById('replyInput').value='';
+  var rt=document.getElementById('replyTemplates');rt.innerHTML='';
+  for(var i=0;i<REPLY_TEMPLATES.length;i++){
+    (function(t){
+      var b=document.createElement('button');
+      b.className='tmpl-btn';
+      b.textContent=t.slice(0,24)+(t.length>24?'...':'');
+      b.title=t;
+      b.onclick=function(){document.getElementById('replyInput').value=t;beep(720,.05);};
+      rt.appendChild(b);
+    })(REPLY_TEMPLATES[i]);
+  }
+  document.getElementById('reviewModal').classList.add('show');
+}
+document.getElementById('revSkip').onclick=function(){document.getElementById('reviewModal').classList.remove('show');beep(400,.06);};
+document.getElementById('revSend').onclick=function(){
+  var r=S.reviews.filter(function(x){return x.id===S.currentReviewId;})[0];
+  if(!r)return;
+  var text=document.getElementById('replyInput').value.trim();
+  if(!text){toast('Bạn chưa viết gì!','warn');return;}
+  r.reply=text;r.replied=true;
+  var score=analyzeSentiment(text);
+  var reaction=getCustomerResponse(r,score);
+  r.customerResponse=reaction.text;
+  var coinsGain=0,xpGain=0;
+  if(reaction.type==='happy'){
+    coinsGain=25+r.stars*4;xpGain=8+r.stars*2;
+    if(S.upgrades.vip)coinsGain=Math.round(coinsGain*1.25);
+    S.coins+=coinsGain;addXp(xpGain);
+    chord([900,1150,1400,1600]);
+    burst(window.innerWidth/2,200,['💖','✨','🎉','⭐'],14);
+  }else if(reaction.type==='neutral'){
+    coinsGain=8;xpGain=3;S.coins+=coinsGain;addXp(xpGain);beep(720,.1);
+  }else{
+    coinsGain=-30-r.stars*3;
+    S.coins=Math.max(0,S.coins+coinsGain);
+    beep(180,.22,'square',.07);shake(document.getElementById('reviewModal'));
+  }
+  document.getElementById('reviewModal').classList.remove('show');
+  showCustomerReaction(r,reaction,coinsGain,xpGain);
+  renderReviews();updateHUD();saveGame();
+};
+function analyzeSentiment(text){
+  var pos=['cảm ơn','xin lỗi','vui','yêu','thương','tốt','đẹp','ok','quý','dễ thương','tuyệt','hài lòng','chân thành','trân trọng','cố gắng','hoan nghênh','hân hạnh','mến','thân thiện','đáng yêu','hihi','haha','iu'];
+  var neg=['tệ','dở','chậm','lộn','sai','dối','lừa','kém','xấu','khó chịu','vớ vẩn','rác','phốt','báo','cáo','chửi','không cần','đừng','thôi đi','bực','tức','ghét'];
+  var rude=['đm','dm','đmm','vcl','vl','vkl','cút','đồ ngu','mẹ m','bố m','chó','ngu','đần','thần kinh','câm','im đi','dkm','dcm','đéo','vãi','xàm','nhảm'];
+  var lower=text.toLowerCase();var score=0;
+  for(var i=0;i<pos.length;i++){if(lower.indexOf(pos[i])>-1)score+=2;}
+  for(var j=0;j<neg.length;j++){if(lower.indexOf(neg[j])>-1)score-=3;}
+  var rudeCount=0;
+  for(var k=0;k<rude.length;k++){if(lower.indexOf(rude[k])>-1){rudeCount++;score-=12;}}
+  if(rudeCount>0)score-=rudeCount*5;
+  if(text.length<4)score-=1;
+  if(text.length>30&&score>0)score+=1;
+  return score;
+}
+function getCustomerResponse(review,score){
+  var c=review.customer;
+  var happy=['Cảm ơn shop nhiều ạ! '+c.emoji+' Thương shop ghê!','Shop dễ thương quá! 💖','Nghe shop nói mà ấm lòng 🥰','Shop trả lời có tâm ghê! ⭐⭐⭐⭐⭐','Mình đã giới thiệu shop cho bạn bè! ✨','Shop chu đáo ghê! 💕'];
+  var neutral=['Dạ vâng ạ, mình ghi nhận 😊','Ok shop, cảm ơn đã phản hồi.','Mình hiểu rồi, hẹn shop lần sau.','Cũng được ạ.'];
+  var angry=['Nói chuyện kiểu gì vậy??? Không biết tôn trọng khách à?! 😡','Thái độ vậy mà làm ăn được hả? Tôi sẽ report!','Không ngờ shop lại như vậy, thất vọng vô cùng! 😤','Chửi khách hả? Tôi sẽ cho mọi người biết!','Hừ! Đừng hòng tôi quay lại lần nữa!!!','Shop cọc cằn quá!! 😠'];
+  var type='neutral';
+  if(score>=2)type='happy';
+  else if(score<=-2)type='angry';
+  else if(score>=0&&review.stars>=4)type='happy';
+  else if(score<=0&&review.stars<=2)type='angry';
+  if(score<=-10)type='angry';
+  if(c.personality==='vui vẻ'||c.personality==='hài hước'||c.personality==='dễ tính'){if(type==='angry'&&Math.random()<.4)type='neutral';}
+  if(c.personality==='khó tính'||c.personality==='nghiêm khắc'||c.personality==='cộc cằn'){if(type==='neutral'&&score<1)type='angry';}
+  return {type:type,text:pk(type==='happy'?happy:type==='angry'?angry:neutral)};
+}
+function showCustomerReaction(review,reaction,coins,xp){
+  var titles={happy:'💖 Khách vui vẻ!',neutral:'😐 Khách phản hồi nhẹ nhàng',angry:'😡 Khách nổi giận!!'};
+  document.getElementById('reactTitle').textContent=titles[reaction.type];
+  document.getElementById('reactAva').textContent=review.customer.emoji;
+  document.getElementById('reactText').textContent=review.customer.name+': '+reaction.text;
+  document.getElementById('reactText').className='customer-reaction'+(reaction.type==='angry'?' angry':'');
+  if(coins!==0||xp!==0){
+    document.getElementById('reactReward').style.display='block';
+    document.getElementById('reactCoins').textContent=(coins>=0?'+':'')+coins+' 🪙';
+    document.getElementById('reactXp').textContent=(xp>=0?'+':'')+xp+' XP';
+  }else document.getElementById('reactReward').style.display='none';
+  if(reaction.type==='angry'){shake(document.getElementById('reactModal'));beep(160,.3,'square',.07);}
+  document.getElementById('reactModal').classList.add('show');
+}
+document.getElementById('reactClose').onclick=function(){document.getElementById('reactModal').classList.remove('show');beep(700,.07);};
+function renderShop(){
+  var el=document.getElementById('shopList');if(!el)return;
+  el.innerHTML='';
+  for(var i=0;i<SHOP_ITEMS.length;i++){
+    (function(item){
+      var owned=!!S.upgrades[item.id];
+      var card=document.createElement('div');
+      card.className='shop-card'+(owned?' owned':'');
+      card.innerHTML='<span class="sc-emoji">'+item.emoji+'</span><h4>'+item.name+'</h4><p>'+item.desc+'</p><div class="price">'+(owned?'—':item.price+' 🪙')+'</div>';
+      if(!owned){
+        var b=document.createElement('button');
+        b.className='btn primary';b.style.width='100%';
+        b.textContent='🛒 Mua';
+        b.onclick=function(){buyUpgrade(item);};
+        card.appendChild(b);
+      }
+      el.appendChild(card);
+    })(SHOP_ITEMS[i]);
+  }
+  updateHUD();
+}
+function buyUpgrade(item){
+  if(S.upgrades[item.id])return;
+  if(S.coins<item.price){toast('Không đủ xu 😢','warn');beep(200,.15,'square');return;}
+  S.coins-=item.price;S.upgrades[item.id]=true;
+  chord([900,1150,1400]);
+  burst(window.innerWidth/2,window.innerHeight/2,['🛍️','✨','💖','🎉'],14);
+  toast('✅ Đã mua '+item.name+'!','ok');
+  renderShop();updateHUD();
+  if(item.id==='stickerpack'||item.id==='perfumeUp'||item.id==='premiumPaper'){
+    if(S.pack)renderDecorPanel();
+    if(item.id==='perfumeUp'){
+      var real=PERFUMES.filter(function(p){return p.id;});
+      S.orders=S.orders.map(function(o){return o.desiredPerfume?o:Object.assign({},o,{desiredPerfume:pk(real).id});});
+      renderOrders();
+    }
+  }
+  if(item.id==='ad'){S.orders.push(makeOrder(),makeOrder());renderOrders();}
+  saveGame();
+}
+function switchView(name){
+  S.view=name;
+  var views=document.querySelectorAll('.view');
+  for(var i=0;i<views.length;i++)views[i].classList.remove('active');
+  var tv=document.getElementById('view-'+name);
+  if(tv)tv.classList.add('active');
+  var tabs=document.querySelectorAll('.tab');
+  for(var j=0;j<tabs.length;j++)tabs[j].classList.toggle('active',tabs[j].getAttribute('data-view')===name);
+  if(name==='orders')renderOrders();
+  if(name==='pack')renderPack();
+  if(name==='map')renderDeliverList();
+  if(name==='reviews')renderReviews();
+  if(name==='shop')renderShop();
+  saveGame();
+}
+var tabs2=document.querySelectorAll('.tab');
+for(var t2=0;t2<tabs2.length;t2++){
+  (function(tb){tb.onclick=function(){switchView(tb.getAttribute('data-view'));beep(620,.05);};})(tabs2[t2]);
+}
+
+function toggleDrawer(open){
+  drawerOpen=open;
+  document.getElementById('drawer').classList.toggle('open',open);
+  document.getElementById('drawerOverlay').classList.toggle('open',open);
+  if(open){renderStats();renderTrackList();renderThemeRow();renderCountryRow();document.getElementById('volSlider').value=S.volume;document.getElementById('volVal').textContent=S.volume;}
+}
+document.getElementById('hamburger').onclick=function(){toggleDrawer(!drawerOpen);beep(640,.06);};
+document.getElementById('drawerClose').onclick=function(){toggleDrawer(false);};
+document.getElementById('drawerOverlay').onclick=function(){toggleDrawer(false);};
+function renderTrackList(){
+  var el=document.getElementById('trackList');el.innerHTML='';
+  for(var i=0;i<TRACKS.length;i++){
+    (function(t,idx){
+      var b=document.createElement('button');
+      b.className='track-btn'+(S.trackIdx===idx?' active':'');
+      b.textContent=(S.music&&S.trackIdx===idx?'▶️ ':'')+t.name;
+      b.onclick=function(){
+        var wasPlaying=S.music;
+        S.trackIdx=idx;musicStep=0;
+        stopMusic();
+        if(wasPlaying)startMusic();
+        document.getElementById('musicBtn').classList.toggle('on',S.music);
+        renderTrackList();
+        toast('🎵 '+t.name,'ok');
+        saveGame();
+      };
+      el.appendChild(b);
+    })(TRACKS[i],i);
+  }
+}
+function renderThemeRow(){
+  var el=document.getElementById('themeRow');el.innerHTML='';
+  for(var i=0;i<THEMES.length;i++){
+    (function(t){
+      var b=document.createElement('button');
+      b.className='theme-btn'+(S.theme===t.id?' active':'');
+      b.style.background='linear-gradient(135deg,'+t.pk+','+t.pkd+')';
+      b.innerHTML='<span class="lbl">'+t.name+'</span>';
+      b.onclick=function(){applyTheme(t.id);beep(700,.06);toast('🎨 '+t.name,'ok');};
+      el.appendChild(b);
+    })(THEMES[i]);
+  }
+}
+function applyTheme(id){
+  var t=THEMES.filter(function(x){return x.id===id;})[0]||THEMES[0];
+  var r=document.documentElement.style;
+  r.setProperty('--pk',t.pk);r.setProperty('--pkd',t.pkd);
+  r.setProperty('--lvd',t.lvd);r.setProperty('--mnd',t.mnd);
+  r.setProperty('--sun',t.sun);r.setProperty('--sund',t.sund);
+  S.theme=id;saveGame();
+}
+function renderCountryRow(){
+  var el=document.getElementById('countryRow');el.innerHTML='';
+  for(var i=0;i<COUNTRIES.length;i++){
+    (function(c){
+      var b=document.createElement('button');
+      b.className='country-btn'+(S.country===c.id?' active':'');
+      b.textContent=c.flag;b.title=c.name;
+      b.onclick=function(){S.country=c.id;document.getElementById('brandFlag').textContent=c.flag;renderCountryRow();toast('🌍 '+c.name,'ok');beep(720,.06);saveGame();};
+      el.appendChild(b);
+    })(COUNTRIES[i]);
+  }
+}
+function applyCountry(){
+  var c=COUNTRIES.filter(function(x){return x.id===S.country;})[0]||COUNTRIES[0];
+  var el=document.getElementById('brandFlag');
+  if(el)el.textContent=c.flag;
+}
+function renderStats(){
+  var el=document.getElementById('statsList');if(!el)return;
+  var tot=0;
+  for(var i=0;i<S.reviews.length;i++)tot+=S.reviews[i].stars;
+  var avg=S.reviews.length?(tot/S.reviews.length).toFixed(1):'—';
+  el.innerHTML='<span>Cấp<b>'+S.level+'</b></span><span>Xu<b>'+S.coins+'</b></span><span>Đã giao<b>'+S.deliveredCount+'</b></span><span>Đánh giá<b>'+S.reviews.length+'</b></span><span>Sao TB<b>'+avg+'</b></span><span>Ngày<b>'+S.day+'</b></span><span>Nâng cấp<b>'+Object.keys(S.upgrades).length+'/10</b></span>';
+}
+document.getElementById('volSlider').addEventListener('input',function(e){
+  S.volume=parseInt(e.target.value,10);
+  document.getElementById('volVal').textContent=S.volume;
+  if(S.volume>0&&S.sound)beep(800,.04);
+  saveGame();
+});
+document.getElementById('eventBtn').onclick=function(){
+  var now=Date.now();
+  if(S._lastEvent&&now-S._lastEvent<30000){toast('⏳ Chờ chút!','warn');return;}
+  S._lastEvent=now;
+  var events=[
+    {t:'🎉 Khách quen! +100🪙',f:function(){S.coins+=100;}},
+    {t:'📣 Viral! +2 đơn',f:function(){S.orders.push(makeOrder(),makeOrder());}},
+    {t:'💝 Fan tặng! +50XP',f:function(){addXp(50);}},
+    {t:'🍀 May mắn! +200🪙',f:function(){S.coins+=200;}},
+    {t:'🎁 Sticker free!',f:function(){if(S.pack){S.pack.decor.stickers.push({emoji:pk(STICKERS_BASE),x:20+Math.random()*60,y:20+Math.random()*60,rot:Math.random()*60-30});renderBox();}}},
+    {t:'🌟 VIP! +150🪙 +30XP',f:function(){S.coins+=150;addXp(30);}}
+  ];
+  var e=pk(events);e.f();
+  toast(e.t,'ok');
+  burst(window.innerWidth/2,150,['🎉','✨','💖','🎁'],14);
+  renderOrders();updateHUD();renderStats();saveGame();
+};
+document.getElementById('tapGameBtn').onclick=function(){
+  var g=document.getElementById('miniGrid');g.innerHTML='';
+  for(var i=0;i<6;i++){
+    var b=document.createElement('button');
+    b.className='mini-box';b.textContent='🎁';
+    b.onclick=function(){playMini(this);};
+    g.appendChild(b);
+  }
+  document.getElementById('gameModal').classList.add('show');
+  beep(780,.07);
+};
+function playMini(btn){
+  if(btn.classList.contains('opened'))return;
+  var rewards=[{c:80,x:15,e:'🪙'},{c:150,x:25,e:'💰'},{c:200,x:40,e:'💎'},{c:50,x:10,e:'🍬'},{c:120,x:20,e:'⭐'},{c:300,x:60,e:'🏆'}];
+  var r=pk(rewards);
+  S.coins+=r.c;addXp(r.x);
+  btn.classList.add('opened');btn.textContent=r.e;
+  var rect=btn.getBoundingClientRect();
+  burst(rect.left+rect.width/2,rect.top+rect.height/2,[r.e,'✨','💖','⭐'],10);
+  chord([900,1200,1500]);
+  toast('+'+r.c+'🪙 +'+r.x+'XP','ok');
+  saveGame();updateHUD();renderStats();
+  setTimeout(function(){document.getElementById('gameModal').classList.remove('show');},800);
+}
+document.getElementById('miniClose').onclick=function(){document.getElementById('gameModal').classList.remove('show');};
+document.getElementById('saveNowBtn').onclick=function(){saveGame();toast('💾 Đã lưu!','ok');beep(800,.08);};
+document.getElementById('resetBtn2').onclick=resetSave;
+document.getElementById('soundBtn').onclick=function(){
+  S.sound=!S.sound;
+  document.getElementById('soundBtn').textContent=S.sound?'🔊':'🔇';
+  document.getElementById('soundBtn').classList.toggle('on',S.sound);
+  if(S.sound)beep(880,.08);
+  toast(S.sound?'🔊 Bật âm thanh':'🔇 Tắt âm thanh','info');
+  saveGame();
+};
+document.getElementById('musicBtn').onclick=function(){
+  try{getCtx().resume();}catch(e){}
+  if(S.music){stopMusic();toast('🎵 Tắt nhạc','info');}
+  else{startMusic();toast('🎵 Bật nhạc','ok');}
+  document.getElementById('musicBtn').classList.toggle('on',S.music);
+  if(drawerOpen)renderTrackList();
+};
+
+/* INIT */
+var loaded=loadGame();
+applyTheme(S.theme);
+applyCountry();
+buildMap();
+ensureOrders();
+renderOrders();
+renderPack();
+renderDeliverList();
+renderReviews();
+renderShop();
+renderDecorPanel();
+updateHUD();
+document.getElementById('soundBtn').textContent=S.sound?'🔊':'🔇';
+document.getElementById('soundBtn').classList.toggle('on',S.sound);
+document.getElementById('musicBtn').classList.toggle('on',S.music);
+document.getElementById('volSlider').value=S.volume;
+document.getElementById('volVal').textContent=S.volume;
+switchView(S.view&&document.getElementById('view-'+S.view)?S.view:'orders');
+saveGame();
+
+dbg('✅ JS OK · '+S.orders.length+' đơn · Xu '+S.coins);
+
+}catch(err){
+  dbg('❌ LỖI: '+err.message,true);
+  console.error(err);
+}
+</script>
+</body>
+</html>
